@@ -1,0 +1,31 @@
+Pixel Lineage Starfall Macro - Adventure Mode + New UI
+
+This modified edition builds on 1vtt's original Pixel Lineage Macro, adding adventure-act selection and a Starfall-themed interface.
+
+ORIGINAL CREATOR CREDIT
+Full credit to 1vtt for the original macro, combat/minigame engine, and Discord webhook system. This project would not exist without that foundation. Please check out and support the original creator:
+https://www.youtube.com/@1-vtt
+
+DOWNLOAD / SOURCE CODE
+https://github.com/remainversatile/roblox_shit
+
+WHAT THIS EDITION ADDS
+- 10 named, clickable worlds
+- Selectable difficulty and modifier, including Nightmare + Elite Patrols
+- Act scanning and return-home repeat logic
+- Automatic Continue clicks on reward popups
+- To Battle fallback after five seconds
+- Automatic rejoin after detected disconnects or a missing game window
+- Character slot selection for returning to the lobby
+- Castle doorway Set Out click
+- Moving starfield and recurring shooting stars
+- Discord settings in the redesigned interface
+
+SETUP
+Install Python 3.10-3.13 (64-bit), extract the project, run Setup.bat once, then open Launch.bat. In the castle, choose your world and press F1 to start or stop. F4 exits.
+
+The macro and OCR run locally. Initial setup downloads dependencies; Roblox and optional Discord notifications still use internet. Scanner calibration may be needed for your screen layout. The full gameplay loop is still being tested.
+
+This is a modified community version, not an official release or endorsement from 1vtt, Roblox, or the Pixel Lineage developers.
+
+#PixelLineage #Roblox #Python #Macro
