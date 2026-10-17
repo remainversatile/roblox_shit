@@ -49,7 +49,7 @@ The default controls match the supplied full-screen layout near 1920x1080. Other
 
 Worlds must be unlocked. If the world selector does not wrap at act 10, begin at an earlier act. Unfamiliar Return Home confirmation dialogs may require manual input. The act-10 ending has not been verified live.
 
-Sixteen automated control-flow tests pass; screenshot OCR, UI startup, and world-card selection were checked. The full live gameplay loop has not been validated end to end. This is a modified community tool, not an official Roblox or Pixel Lineage product.
+Nineteen automated control-flow tests pass; screenshot OCR, UI startup, and world-card selection were checked. The full live gameplay loop has not been validated end to end. This is a modified community tool, not an official Roblox or Pixel Lineage product.
 
 ## Development checks
 
@@ -73,4 +73,6 @@ Auto-rejoin recognizes central Roblox connection/error dialogs with Reconnect, R
 
 Recovery uses Roblox's documented deep-link format: https://create.roblox.com/docs/production/promotion/deeplinks
 
-Screen recognition was checked against supplied title, slot and event screenshots; actual disconnection/rejoin has not been tested live. Source validation and 16 automated tests pass. Run all tests with `.venv\Scripts\python.exe -m unittest discover -p "test_*.py"`.
+Screen recognition was checked against supplied title, slot and event screenshots; actual disconnection/rejoin has not been tested live. Source validation and 19 automated tests pass. Run all tests with `.venv\Scripts\python.exe -m unittest discover -p "test_*.py"`.
+
+Return Home now clicks in three-click bursts, checks confirmation dialogs first, and repeats until the castle is detected. F1 stops the bursts.
