@@ -1,24 +1,75 @@
 # EXAM2 - MGSC 2301 Ch 6-8 helper
 # Plain Python for the TI-84 Python app.
 # Every answer shows TABLE (course z-table
-# method) and EXACT (calculator method).
+# method, matches the key) and EXACT
+# (full calculator precision).
+# Inputs accept math: 46/sqrt(85), 1-.05/2
 import math
 
+# course table critical values
 TBLZ = {80: 1.28, 90: 1.645, 95: 1.96,
         98: 2.33, 99: 2.576}
+ENV = {"sqrt": math.sqrt, "pi": math.pi}
 
 
-def num(prompt):
+# ---------- input helpers ----------
+
+def num(prompt, pos=False):
   while True:
-    s = input(prompt)
+    s = input(prompt).strip()
+    if s == "":
+      continue
     try:
-      return float(s)
+      v = float(eval(s, ENV))
     except:
-      print("Type a number")
+      print("Not a number. Try again")
+      continue
+    if pos and v <= 0:
+      print("Must be > 0")
+      continue
+    return v
+
+
+def pick(prompt, hi):
+  # menu choice 1..hi
+  while True:
+    v = num(prompt)
+    k = int(v)
+    if k == v and 1 <= k <= hi:
+      return k
+    print("Pick 1 to", hi)
+
+
+def prop(prompt):
+  # proportion; 66 or .66 -> .66
+  while True:
+    v = num(prompt)
+    if v > 1:
+      v = v / 100
+    if 0 < v < 1:
+      return v
+    print("Need 0 < p < 1")
 
 
 def pause():
   input("[enter]")
+
+
+def rnd(x, d):
+  # half away from zero, float-safe
+  m = 10 ** d
+  s = 1
+  if x < 0:
+    s = -1
+  return s * math.floor(abs(x) * m + 0.5 + 1e-9) / m
+
+
+def r2(z):
+  return rnd(z, 2)
+
+
+def r4(a):
+  return rnd(a, 4)
 
 
 def f4(x):
@@ -29,32 +80,53 @@ def f2(x):
   return "%.2f" % x
 
 
+def pct(p):
+  return "%.2f%%" % (p * 100)
+
+
+# ---------- normal distribution ----------
+
 try:
   _erf = math.erf
 except:
   def _erf(x):
-    # Abramowitz-Stegun 7.1.26
+    # all-positive series, full precision
     sg = 1
     if x < 0:
       sg = -1
       x = -x
-    t = 1 / (1 + 0.3275911 * x)
-    y = 1 - (((((1.061405429 * t
-        - 1.453152027) * t) + 1.421413741)
-        * t - 0.284496736) * t
-        + 0.254829592) * t * math.exp(-x * x)
-    return sg * y
+    if x > 6:
+      return sg * 1.0
+    term = x
+    s = x
+    k = 0
+    while term > 1e-17 * s:
+      k += 1
+      term = term * 2 * x * x / (2 * k + 1)
+      s += term
+    return sg * 2 / math.sqrt(math.pi) * math.exp(-x * x) * s
 
 
 def phi(z):
-  # left area under standard normal
+  # area to the LEFT of z
   return 0.5 * (1 + _erf(z / math.sqrt(2)))
+
+
+def tphi(z):
+  # table reading: z to 2 places, 4-place
+  # area; past +/-3.49 reads .0000/1.0000
+  z = r2(z)
+  if z < -3.49:
+    return 0.0
+  if z > 3.49:
+    return 1.0
+  return r4(phi(z))
 
 
 def invphi(a):
   lo = -9.0
   hi = 9.0
-  for i in range(80):
+  for i in range(55):
     m = (lo + hi) / 2
     if phi(m) < a:
       lo = m
@@ -63,10 +135,24 @@ def invphi(a):
   return (lo + hi) / 2
 
 
-def r2(z):
-  # z rounded the way the table reads it
-  return math.floor(z * 100 + 0.5) / 100
+def tablez(a):
+  # z whose 4-place area is closest to a;
+  # a tie (like .95) takes the midpoint
+  best = 9.0
+  zs = []
+  z0 = r2(invphi(a))
+  for i in range(-3, 4):
+    z = r2(z0 + i / 100)
+    d = abs(r4(phi(z)) - a)
+    if d < best - 1e-9:
+      best = d
+      zs = [z]
+    elif abs(d - best) <= 1e-9:
+      zs.append(z)
+  return rnd(sum(zs) / len(zs), 3)
 
+
+# ---------- t distribution ----------
 
 try:
   _lg = math.lgamma
@@ -87,35 +173,28 @@ except:
     return -tmp + math.log(2.5066282746310005 * s / x)
 
 
+def _tiny(v):
+  if abs(v) < 1e-30:
+    return 1e-30
+  return v
+
+
 def _betacf(a, b, x):
   qab = a + b
   qap = a + 1
   qam = a - 1
   c = 1.0
-  d = 1 - qab * x / qap
-  if abs(d) < 1e-30:
-    d = 1e-30
-  d = 1 / d
+  d = 1 / _tiny(1 - qab * x / qap)
   h = d
   for m in range(1, 200):
     m2 = 2 * m
     aa = m * (b - m) * x / ((qam + m2) * (a + m2))
-    d = 1 + aa * d
-    if abs(d) < 1e-30:
-      d = 1e-30
-    c = 1 + aa / c
-    if abs(c) < 1e-30:
-      c = 1e-30
-    d = 1 / d
+    d = 1 / _tiny(1 + aa * d)
+    c = _tiny(1 + aa / c)
     h *= d * c
     aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
-    d = 1 + aa * d
-    if abs(d) < 1e-30:
-      d = 1e-30
-    c = 1 + aa / c
-    if abs(c) < 1e-30:
-      c = 1e-30
-    d = 1 / d
+    d = 1 / _tiny(1 + aa * d)
+    c = _tiny(1 + aa / c)
     de = d * c
     h *= de
     if abs(de - 1) < 1e-10:
@@ -137,15 +216,14 @@ def _ibeta(a, b, x):
 
 def tupper(t, df):
   # area to the RIGHT of t (t >= 0)
-  x = df / (df + t * t)
-  return 0.5 * _ibeta(df / 2, 0.5, x)
+  return 0.5 * _ibeta(df / 2, 0.5, df / (df + t * t))
 
 
 def invt(upper, df):
-  # t with this upper-tail area
+  # positive t with this upper-tail area
   lo = 0.0
-  hi = 60.0
-  for i in range(70):
+  hi = 700.0
+  for i in range(50):
     m = (lo + hi) / 2
     if tupper(m, df) > upper:
       lo = m
@@ -154,289 +232,369 @@ def invt(upper, df):
   return (lo + hi) / 2
 
 
-def zcrit(conf):
-  # conf as a percent, e.g. 95
-  ex = invphi(1 - (1 - conf / 100) / 2)
-  k = int(conf + 0.5)
-  if k in TBLZ and abs(conf - k) < 1e-9:
-    tb = TBLZ[k]
-  else:
-    tb = r2(ex)
-  return tb, ex
-
+# ---------- confidence helpers ----------
 
 def getconf():
-  c = num("Confidence % (eg 95): ")
-  if c < 1:
-    c = c * 100
+  while True:
+    c = num("Confidence % (eg 95): ")
+    if 0 < c < 1:
+      c = c * 100
+    if 0 < c < 100:
+      break
+    print("Need 0 to 100")
   a = 1 - c / 100
-  print("alpha =", f4(a))
-  print("a/2 =", f4(a / 2), " 1-a/2 =", f4(1 - a / 2))
+  print("alpha=" + f4(a) + " a/2=" + f4(a / 2))
+  print("1-a/2=" + f4(1 - a / 2))
   return c
 
 
-def r4(a):
-  return math.floor(a * 10000 + 0.5) / 10000
+def zcrit(c):
+  # (table z, exact z) for confidence c%
+  up = 1 - (1 - c / 100) / 2
+  ex = invphi(up)
+  k = int(c + 0.5)
+  if k in TBLZ and abs(c - k) < 1e-9:
+    return TBLZ[k], ex
+  return tablez(up), ex
 
 
-def areas(lo_z, hi_z, kind, tbl):
-  # kind: 1 below, 2 above, 3 between
-  # tbl: read 4-place areas like the table
-  pl = phi(lo_z)
-  ph = phi(hi_z)
-  if tbl:
-    pl = r4(pl)
-    ph = r4(ph)
-  if kind == 1:
-    return ph
-  if kind == 2:
-    return 1 - pl
-  return ph - pl
+def show_z(c):
+  tb, ex = zcrit(c)
+  print("z table " + str(tb) + "  exact " + f4(ex))
+  return tb, ex
 
+
+# ---------- probability engine ----------
 
 def askkind():
-  print("1:P(below a)  2:P(above a)")
-  print("3:P(between a,b)")
-  return int(num("Pick: "))
+  print("1 below a   2 above a")
+  print("3 between a,b  4 outside a,b")
+  print("5 within +/-d of center")
+  return pick("Pick: ", 5)
 
 
-def prob_core(center, se, label, se_t=0):
+def area(pa, pb, k):
+  # pa, pb: left areas at a and b
+  if k == 1:
+    return pa
+  if k == 2:
+    return 1 - pa
+  if k == 3:
+    return pb - pa
+  return 1 - (pb - pa)
+
+
+def prob_core(ctr, se, se_t=0):
+  # se_t: SE the table method uses
   if se_t == 0:
     se_t = se
   k = askkind()
-  if k == 3:
+  if k == 5:
+    d = num("d (how far) = ", True)
+    a = ctr - d
+    b = ctr + d
+    print("range " + str(rnd(a, 6)) + " to " + str(rnd(b, 6)))
+    k = 3
+  elif k >= 3:
     a = num("a (lower) = ")
     b = num("b (upper) = ")
+    if b < a:
+      a, b = b, a
   else:
     a = num("a = ")
     b = a
-  za = (a - center) / se
-  zb = (b - center) / se
-  ta = r2((a - center) / se_t)
-  tb = r2((b - center) / se_t)
-  print("-- z =", label)
-  if k == 3:
-    print("z(a) =", f4(za), " z(b) =", f4(zb))
+  za = (a - ctr) / se
+  zb = (b - ctr) / se
+  ta = r2((a - ctr) / se_t)
+  tb = r2((b - ctr) / se_t)
+  if k <= 2:
+    print("z = " + f4(za) + " -> table " + f2(ta))
+    print("left area " + f4(tphi(ta)))
   else:
-    print("z =", f4(za))
-  pt = areas(ta, tb, k, True)
-  pe = areas(za, zb, k, False)
-  if k == 3:
-    print("table: z", f2(ta), "and", f2(tb))
-    print("  L areas", f4(phi(ta)), f4(phi(tb)))
-  else:
-    print("table: z", f2(ta), "L area", f4(phi(ta)))
-  print("TABLE P =", f4(pt))
-  print("EXACT P =", f4(pe))
+    print("z(a)=" + f4(za) + " -> " + f2(ta))
+    print("z(b)=" + f4(zb) + " -> " + f2(tb))
+    print("areas " + f4(tphi(ta)) + ", " + f4(tphi(tb)))
+  pt = area(tphi(ta), tphi(tb), k)
+  pe = area(phi(za), phi(zb), k)
+  print("TABLE P = " + f4(pt) + " (" + pct(pt) + ")")
+  print("EXACT P = " + f4(pe))
   if k == 2:
-    print("(above = 1 - left area)")
-  if k == 3:
-    print("(subtract AREAS, not z)")
+    print("above = 1 - left area")
+  if k >= 3:
+    print("subtract AREAS, not z")
+  if abs(ta) > 3.49 or abs(tb) > 3.49:
+    print("z past 3.49: table edge")
   pause()
 
 
-def m_individual():
-  print("ONE value x: z=(x-mu)/sigma")
-  mu = num("mu = ")
-  sg = num("sigma = ")
-  prob_core(mu, sg, "(x-mu)/sigma")
-
-
-def m_inverse():
-  print("PERCENTILE -> value")
-  print("Enter the LEFT area.")
-  print("top 10% -> .90")
-  print("bottom 20% -> .20")
-  print("67.72% ABOVE x -> .3228")
-  a = num("left area = ")
-  if a > 1:
-    a = a / 100
-  print("1: find x   2: find mu")
-  k = int(num("Pick: "))
-  ze = invphi(a)
-  zt = r2(ze)
-  print("z table ~", f2(zt), " exact", f4(ze))
-  print("(check table: the area closest")
-  print(" to", f4(a), "is the z to use)")
-  if k == 1:
-    mu = num("mu = ")
-    sg = num("sigma = ")
-    print("x = mu + (z)(sigma)")
-    print("TABLE x =", f4(mu + zt * sg))
-    print("EXACT x =", f4(mu + ze * sg))
-  else:
-    x = num("x = ")
-    sg = num("sigma = ")
-    print("mu = x - (z)(sigma)")
-    print("TABLE mu =", f4(x - zt * sg))
-    print("EXACT mu =", f4(x - ze * sg))
-  pause()
-
-
-def m_xbar():
-  print("SAMPLE MEAN xbar (Ch 7)")
-  print("uses sigma/sqrt(n), NOT sigma")
-  mu = num("mu = ")
-  sg = num("sigma (population) = ")
-  n = num("n = ")
-  se = sg / math.sqrt(n)
-  print("E(xbar) = mu =", mu)
-  print("SE = sigma/sqrt(n) =", f4(se))
+def clt(n):
   if n >= 30:
     print("n>=30: approx normal (CLT)")
   else:
-    print("n<30: normal ONLY if pop normal")
-  prob_core(mu, se, "(xbar-mu)/SE")
+    print("n<30: normal ONLY if pop is")
 
 
-def m_pbar():
-  print("SAMPLE PROPORTION pbar (Ch 7)")
-  print("SE uses KNOWN p, not pbar")
-  p = num("population p = ")
-  if p > 1:
-    p = p / 100
-  n = num("n = ")
-  print("np =", f2(n * p), " n(1-p) =", f2(n * (1 - p)))
-  if n * p >= 5 and n * (1 - p) >= 5:
+def phat_check(p, n):
+  a = n * p
+  b = n * (1 - p)
+  print("np=" + f2(a) + " n(1-p)=" + f2(b))
+  if a >= 5 and b >= 5:
     print("both >= 5: approx normal")
   else:
     print("NOT both >= 5: not normal!")
   se = math.sqrt(p * (1 - p) / n)
-  print("E(pbar) = p =", p)
-  print("SE =", f4(se), "(" + "%.6f" % se + ")")
-  print("TABLE uses SE", f4(se) + ";")
-  print("EXACT keeps all digits.")
-  print("Count x given? cutoff = x/n")
-  prob_core(p, se, "(pbar-p)/SE", r4(se))
+  print("SE = " + f4(se) + " (" + "%.6f" % se + ")")
+  return se
 
 
-def ci_print(pt, e_t, e_e, dp):
-  fm = "%." + str(int(dp)) + "f"
-  print("TABLE: (" + fm % (pt - e_t) + ", " + fm % (pt + e_t) + ")")
-  print("EXACT: (" + fm % (pt - e_e) + ", " + fm % (pt + e_e) + ")")
-  print("width = 2E. E = half width.")
+def spread():
+  # returns (center, se_exact, se_table)
+  print("Value is about:")
+  print("1 one x      2 sample mean")
+  print("3 sample proportion")
+  w = pick("Pick: ", 3)
+  if w == 1:
+    mu = num("mu = ")
+    sg = num("sigma = ", True)
+    return mu, sg, sg
+  if w == 2:
+    mu = num("mu = ")
+    sg = num("sigma (population) = ", True)
+    n = num("n = ", True)
+    se = sg / math.sqrt(n)
+    print("SE = sigma/sqrt(n) = " + f4(se))
+    clt(n)
+    return mu, se, se
+  p = prop("population p = ")
+  n = num("n = ", True)
+  se = phat_check(p, n)
+  return p, se, r4(se)
+
+
+# ---------- menu items ----------
+
+def m_individual():
+  print("ONE value: z=(x-mu)/sigma")
+  mu = num("mu = ")
+  sg = num("sigma = ", True)
+  prob_core(mu, sg)
+
+
+def m_xbar():
+  print("SAMPLE MEAN (Ch 7)")
+  print("SE = sigma/sqrt(n), not sigma")
+  mu = num("mu = ")
+  sg = num("sigma (population) = ", True)
+  n = num("n = ", True)
+  se = sg / math.sqrt(n)
+  print("E(xbar) = mu = " + str(mu))
+  print("SE = " + f4(se))
+  clt(n)
+  prob_core(mu, se)
+
+
+def m_pbar():
+  print("SAMPLE PROPORTION (Ch 7)")
+  print("SE uses KNOWN p, not pbar")
+  p = prop("population p = ")
+  n = num("n = ", True)
+  print("E(pbar) = p = " + str(p))
+  se = phat_check(p, n)
+  print("TABLE uses SE " + f4(se))
+  print("Count given? cutoff = x/n")
+  prob_core(p, se, r4(se))
+
+
+def m_inverse():
+  print("PERCENT -> CUTOFF (inverse)")
+  print("1 % below cutoff")
+  print("2 % above cutoff (top __%)")
+  print("3 middle % (two cutoffs)")
+  k = pick("Pick: ", 3)
+  pc = prop("percent (eg 10 or .10): ")
+  if k == 1:
+    lefts = [pc]
+  elif k == 2:
+    lefts = [1 - pc]
+  else:
+    lefts = [(1 - pc) / 2, 1 - (1 - pc) / 2]
+  for a in lefts:
+    print("LEFT " + f4(a) + " z " + str(tablez(a)) + " ex " + f4(invphi(a)))
+  print("Solve for: 1 cutoff  2 mu")
+  g = pick("Pick: ", 2)
+  if g == 2:
+    x = num("x = ")
+    sg = num("sigma = ", True)
+    print("mu = x - (z)(sigma)")
+    for a in lefts:
+      print("TABLE mu = " + f4(x - tablez(a) * sg))
+      print("EXACT mu = " + f4(x - invphi(a) * sg))
+    pause()
+    return
+  ctr, se, se_t = spread()
+  print("cutoff = center + (z)(SE)")
+  for a in lefts:
+    print("TABLE = " + f4(ctr + tablez(a) * se_t))
+    print("EXACT = " + f4(ctr + invphi(a) * se))
+  pause()
+
+
+def m_crit():
+  print("CRITICAL PROBS & VALUES")
+  c = getconf()
+  show_z(c)
+  n = num("n for t (0 = skip): ")
+  if n >= 2:
+    df = int(n - 1 + 0.5)
+    up = (1 - c / 100) / 2
+    print("df=" + str(df) + " upper area " + f4(up))
+    print("t = +/-" + "%.3f" % invt(up, df))
+  pause()
+
+
+def ci_out(pt, e_t, e_e):
+  dp = int(num("decimals wanted: "))
+  if dp < 0 or dp > 6:
+    dp = 2
+  fm = "%." + str(dp) + "f"
+  print("TABLE (" + fm % (pt - e_t) + ", " + fm % (pt + e_t) + ")")
+  print("EXACT (" + fm % (pt - e_e) + ", " + fm % (pt + e_e) + ")")
+  print("width = 2E = " + fm % (2 * e_t))
+  pause()
 
 
 def m_ci_z():
-  print("CI for mu, SIGMA KNOWN -> z")
+  print("CI for mu, SIGMA KNOWN: z")
   xb = num("xbar = ")
-  sg = num("sigma = ")
-  n = num("n = ")
+  sg = num("sigma = ", True)
+  n = num("n = ", True)
   c = getconf()
-  tb, ex = zcrit(c)
+  tb, ex = show_z(c)
   se = sg / math.sqrt(n)
-  print("SE = sigma/sqrt(n) =", f4(se))
-  print("z table", tb, " exact", f4(ex))
-  print("E table =", f4(tb * se), " exact", f4(ex * se))
-  dp = num("decimals wanted: ")
-  ci_print(xb, tb * se, ex * se, dp)
-  pause()
+  print("SE = sigma/sqrt(n) = " + f4(se))
+  print("E table " + f4(tb * se) + " exact " + f4(ex * se))
+  ci_out(xb, tb * se, ex * se)
 
 
 def m_ci_t():
-  print("CI for mu, only s -> t")
-  print("(t even if n >= 30)")
+  print("CI for mu, only s: t")
+  print("(t even when n >= 30)")
   xb = num("xbar = ")
-  s = num("s = ")
-  n = num("n = ")
+  s = num("s = ", True)
+  n = num("n = ", True)
+  if n < 2:
+    print("need n >= 2")
+    pause()
+    return
   c = getconf()
   df = int(n - 1 + 0.5)
   up = (1 - c / 100) / 2
+  print("computing t...")
   te = invt(up, df)
-  print("df = n-1 =", df)
-  print("t-table: row df", df, "col", f4(up))
-  print("t exact =", "%.3f" % te)
+  print("df = n-1 = " + str(df))
+  print("t-table: row " + str(df) + ", col " + f4(up))
+  print("t exact = " + "%.3f" % te)
+  if n < 30:
+    print("n<30: needs normal pop")
   tt = num("t from YOUR table (0=exact): ")
-  if tt == 0:
-    tt = te
+  if tt <= 0:
+    tt = rnd(te, 3)
   se = s / math.sqrt(n)
-  print("SE = s/sqrt(n) =", f4(se))
-  print("E table =", f4(tt * se), " exact", f4(te * se))
-  dp = num("decimals wanted: ")
-  ci_print(xb, tt * se, te * se, dp)
-  pause()
+  print("SE = s/sqrt(n) = " + f4(se))
+  print("E table " + f4(tt * se) + " exact " + f4(te * se))
+  ci_out(xb, tt * se, te * se)
 
 
 def m_ci_p():
-  print("CI for p: uses pbar in SE")
-  print("1: I have pbar  2: I have x")
-  k = int(num("Pick: "))
+  print("CI for p: SE uses pbar")
+  print("1 have pbar  2 have count x")
+  k = pick("Pick: ", 2)
   if k == 2:
     x = num("x (count) = ")
-    n = num("n = ")
+    n = num("n = ", True)
     pb = x / n
   else:
-    pb = num("pbar = ")
-    if pb > 1:
-      pb = pb / 100
-    n = num("n = ")
-  print("pbar =", f4(pb))
-  print("n*pbar =", f2(n * pb), " n(1-pbar) =", f2(n * (1 - pb)))
+    pb = prop("pbar = ")
+    n = num("n = ", True)
+  print("pbar = " + f4(pb))
+  print("n*pbar=" + f2(n * pb) + " n(1-pbar)=" + f2(n * (1 - pb)))
+  if n * pb < 5 or n * (1 - pb) < 5:
+    print("counts < 5: not normal!")
   c = getconf()
-  tb, ex = zcrit(c)
+  tb, ex = show_z(c)
   se = math.sqrt(pb * (1 - pb) / n)
-  print("SE =", f4(se))
-  print("z table", tb, " exact", f4(ex))
-  print("E table =", f4(tb * se), " exact", f4(ex * se))
-  dp = num("decimals wanted: ")
-  ci_print(pb, tb * se, ex * se, dp)
-  pause()
+  print("SE = " + f4(se))
+  print("E table " + f4(tb * se) + " exact " + f4(ex * se))
+  ci_out(pb, tb * se, ex * se)
 
 
 def ceil_n(v):
-  c = math.ceil(v - 1e-9)
-  return int(c)
+  return int(math.ceil(v - 1e-9))
 
 
 def m_n_mean():
-  print("MIN n for a MEAN")
-  print("n = ((z)(sigma)/E)^2, round UP")
-  sg = num("sigma (or range/4) = ")
-  e = num("E (margin) = ")
+  print("MIN n for a MEAN, round UP")
+  print("1 sigma given  2 use range/4")
+  k = pick("Pick: ", 2)
+  if k == 2:
+    rg = num("range (max-min) = ", True)
+    sg = rg / 4
+    print("sigma ~ " + f4(sg))
+  else:
+    sg = num("sigma = ", True)
+  e = num("E (margin) = ", True)
   c = getconf()
-  tb, ex = zcrit(c)
+  tb, ex = show_z(c)
   vt = (tb * sg / e) ** 2
   ve = (ex * sg / e) ** 2
-  print("z table", tb, " exact", f4(ex))
-  print("TABLE n =", f4(vt), "-> UP", ceil_n(vt))
-  print("EXACT n =", f4(ve), "-> UP", ceil_n(ve))
+  print("TABLE " + f4(vt) + " -> " + str(ceil_n(vt)))
+  print("EXACT " + f4(ve) + " -> " + str(ceil_n(ve)))
   pause()
 
 
 def m_n_prop():
   print("MIN n for a PROPORTION")
-  print("no pilot -> p* = .50")
-  e = num("E (decimal, 3 pts=.03) = ")
+  print("no pilot: p* = .50, round UP")
+  e = num("E (3 points = .03): ", True)
   if e >= 1:
     e = e / 100
-    print("converted E to", e)
-  ps = num("p* (0 = none) = ")
-  if ps == 0:
+    print("using E = " + str(e))
+  ps = num("p* (0 = no pilot) = ")
+  if ps <= 0:
     ps = 0.5
-  if ps > 1:
+  elif ps >= 1:
     ps = ps / 100
   c = getconf()
-  tb, ex = zcrit(c)
+  tb, ex = show_z(c)
   vt = tb * tb * ps * (1 - ps) / (e * e)
   ve = ex * ex * ps * (1 - ps) / (e * e)
-  print("z table", tb, " exact", f4(ex))
-  print("TABLE n =", f4(vt), "-> UP", ceil_n(vt))
-  print("EXACT n =", f4(ve), "-> UP", ceil_n(ve))
+  print("TABLE " + f4(vt) + " -> " + str(ceil_n(vt)))
+  print("EXACT " + f4(ve) + " -> " + str(ceil_n(ve)))
+  pause()
+
+
+def m_back():
+  print("FROM A CI (L, U)")
+  lo = num("L = ")
+  hi = num("U = ")
+  print("center = (L+U)/2 = " + str(rnd((lo + hi) / 2, 6)))
+  print("E = (U-L)/2 = " + str(rnd((hi - lo) / 2, 6)))
+  print("width = U-L = " + str(rnd(hi - lo, 6)))
   pause()
 
 
 def m_sd():
   print("STD DEV from raw data")
-  print("enter values; blank to finish")
+  print("enter values, blank = done")
   xs = []
   while True:
-    s = input("x" + str(len(xs) + 1) + " = ")
+    s = input("x" + str(len(xs) + 1) + " = ").strip()
     if s == "":
       break
     try:
-      xs.append(float(s))
+      xs.append(float(eval(s, ENV)))
     except:
-      print("Type a number")
+      print("Not a number")
   n = len(xs)
   if n < 2:
     print("need 2+ values")
@@ -446,73 +604,71 @@ def m_sd():
   ss = 0.0
   for x in xs:
     ss += (x - m) ** 2
-  print("n =", n, " mean =", f4(m))
-  print("sum (x-mean)^2 =", f4(ss))
-  print("POP sigma (/N) =", f4(math.sqrt(ss / n)))
-  print("SAMPLE s (/n-1) =", f4(math.sqrt(ss / (n - 1))))
+  print("n=" + str(n) + " mean=" + f4(m))
+  print("sum(x-mean)^2 = " + f4(ss))
+  print("POP sigma /N = " + f4(math.sqrt(ss / n)))
+  print("SAMPLE s /(n-1) = " + f4(math.sqrt(ss / (n - 1))))
   pause()
 
 
 def m_which():
-  print("WHICH FORMULA?")
   print("About: 1 one value x")
   print("2 an average  3 a proportion")
-  a = int(num("Pick: "))
+  a = pick("Pick: ", 3)
   if a == 1:
-    print("Ch 6. z=(x-mu)/sigma")
-    print("Cutoff/percentile? Use menu 2")
-    print("x = mu + (z)(sigma)")
-  elif a == 2:
-    print("Want: 1 probability")
-    print("2 interval  3 sample size")
-    b = int(num("Pick: "))
+    print("Ch 6: z = (x-mu)/sigma")
+    print("P -> menu 1. Cutoff -> 4")
+    pause()
+    return
+  print("Want: 1 probability")
+  print("2 interval  3 sample size")
+  b = pick("Pick: ", 3)
+  if a == 2:
     if b == 1:
-      print("Ch 7. SE = sigma/sqrt(n)")
-      print("z = (xbar-mu)/SE. Never t.")
+      print("Ch 7: SE = sigma/sqrt(n)")
+      print("z, never t -> menu 2")
     elif b == 2:
-      print("sigma given? -> z (menu 5)")
-      print("only s?      -> t (menu 6)")
-      print("df = n - 1")
+      print("sigma given -> z, menu 6")
+      print("only s -> t, menu 7")
     else:
-      print("n = ((z)(sigma)/E)^2, UP")
+      print("n=((z)(sigma)/E)^2 menu 9")
   else:
-    print("Want: 1 probability")
-    print("2 interval  3 sample size")
-    b = int(num("Pick: "))
     if b == 1:
-      print("Ch 7. p is KNOWN.")
+      print("Ch 7: p KNOWN -> menu 3")
       print("SE = sqrt(p(1-p)/n)")
     elif b == 2:
-      print("Ch 8. p unknown.")
-      print("SE = sqrt(pbar(1-pbar)/n)")
+      print("Ch 8: SE uses pbar, menu 8")
     else:
-      print("n=z^2 p*(1-p*)/E^2, UP")
-      print("no pilot: p* = .50")
+      print("p*=.50 if no pilot, menu 10")
   pause()
 
 
 MENU = [
   ("Which formula?", m_which),
-  ("Ch6 P for one x", m_individual),
-  ("Ch6 percentile->x/mu", m_inverse),
-  ("Ch7 P for xbar", m_xbar),
-  ("Ch7 P for pbar", m_pbar),
-  ("Ch8 CI mu sigma(z)", m_ci_z),
-  ("Ch8 CI mu s(t)", m_ci_t),
-  ("Ch8 CI p", m_ci_p),
-  ("Ch8 min n mean", m_n_mean),
-  ("Ch8 min n prop", m_n_prop),
-  ("Std dev from data", m_sd),
+  ("P one x (Ch6)", m_individual),
+  ("P xbar (Ch7)", m_xbar),
+  ("P pbar (Ch7)", m_pbar),
+  ("Percent->cutoff", m_inverse),
+  ("Critical z / t", m_crit),
+  ("CI mu, sigma: z", m_ci_z),
+  ("CI mu, s: t", m_ci_t),
+  ("CI p", m_ci_p),
+  ("Min n, mean", m_n_mean),
+  ("Min n, prop", m_n_prop),
+  ("From CI: E, ctr", m_back),
+  ("Std dev of data", m_sd),
 ]
 
 
 def main():
   while True:
-    print("== EXAM 2 Ch 6-8 ==")
-    for i in range(len(MENU)):
-      print(str(i) + ":" + MENU[i][0])
-    print("q: quit")
-    s = input("Pick #: ")
+    print("== EXAM 2 (q quits) ==")
+    for i in range(0, len(MENU), 2):
+      a = (str(i) + " " + MENU[i][0] + " " * 16)[:16]
+      if i + 1 < len(MENU):
+        a = a + str(i + 1) + " " + MENU[i + 1][0]
+      print(a[:32])
+    s = input("Pick #: ").strip()
     if s == "q" or s == "Q":
       break
     try:
@@ -522,6 +678,8 @@ def main():
     if 0 <= k < len(MENU):
       try:
         MENU[k][1]()
+      except KeyboardInterrupt:
+        print("back to menu")
       except Exception as e:
         print("Error:", e)
         pause()
