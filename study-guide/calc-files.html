@@ -1,0 +1,1026 @@
+<title>EXAM2 Calculator Files</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Serif:wght@600;700&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global', displayAlign: 'left' },
+  options: { enableMenu: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" defer></script>
+<style>
+/* Layout: one reading column with a sticky section index on wide screens; formula sheet set like the printed handout */
+:root {
+  --bg: #f7f8fa;
+  --paper: #ffffff;
+  --ink: #17202b;
+  --muted: #5a6573;
+  --rule: #d9dee5;
+  --accent: #1d4f7a;
+  --accent-2: #2f7d6d;
+  --tint: #e8eff6;
+  --mark: #fff1a8;
+  --mark-ink: #3a3000;
+  --warn: #9a3b12;
+  --warn-tint: #fbece4;
+  --curve-fill: #bfe0d8;
+  --display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161c; --paper: #182029; --ink: #e6ebf1; --muted: #9aa6b4; --rule: #2c3743;
+    --accent: #8cc0ee; --accent-2: #7fd0bd; --tint: #1f2c3a; --mark: #4a4114; --mark-ink: #fff3b8;
+    --warn: #f0a17c; --warn-tint: #3a2419; --curve-fill: #2c5a50; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161c; --paper: #182029; --ink: #e6ebf1; --muted: #9aa6b4; --rule: #2c3743;
+  --accent: #8cc0ee; --accent-2: #7fd0bd; --tint: #1f2c3a; --mark: #4a4114; --mark-ink: #fff3b8;
+  --warn: #f0a17c; --warn-tint: #3a2419; --curve-fill: #2c5a50; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; padding-top: 32px; font-size: 13.5px; }
+nav.toc p { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav.toc a { color: var(--muted); text-decoration: none; display: block; padding: 3px 8px; border-left: 2px solid transparent; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); border-left-color: var(--accent); outline: none; }
+main { min-width: 0; padding-top: 32px; }
+header.top { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-2); margin: 0 0 6px; }
+h1 { font-family: var(--display); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; margin: 0 0 10px; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 26px; line-height: 1.2; margin: 0 0 6px; text-wrap: balance; color: var(--ink); }
+h3 { font-size: 17px; margin: 26px 0 8px; color: var(--accent); }
+.sub { color: var(--muted); margin: 0; }
+section { padding-block: 36px 8px; border-bottom: 1px solid var(--rule); }
+section > .src { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+p { margin: 0 0 12px; max-width: 72ch; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; max-width: 72ch; }
+li { margin-bottom: 4px; }
+strong { font-weight: 700; }
+.ans { background: var(--mark); color: var(--mark-ink); padding: 0 4px; border-radius: 2px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.num { font-family: var(--mono); font-size: .92em; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 20px 0 8px; }
+.fact { background: var(--paper); border: 1px solid var(--rule); padding: 12px 14px; }
+.fact b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+.callout { background: var(--warn-tint); border-left: 3px solid var(--warn); padding: 12px 16px; margin: 16px 0; max-width: 72ch; }
+.callout p:last-child { margin: 0; }
+.callout .lab { color: var(--warn); font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0 18px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--paper); }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { font-size: 12px; font-family: var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--tint); }
+td.n, th.n { font-variant-numeric: tabular-nums; }
+.math { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.steps { counter-reset: s; list-style: none; padding: 0; }
+.steps li { counter-increment: s; position: relative; padding-left: 30px; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 21px; height: 21px; border-radius: 50%; background: var(--tint); color: var(--accent); font: 600 12px/21px var(--mono); text-align: center; }
+
+/* Official formula sheet, reproduced */
+.sheet { background: var(--paper); border: 1px solid var(--rule); padding: 8px 24px 16px; margin: 18px 0; }
+.sheet-title { text-align: center; font-weight: 700; color: #c0281e; font-size: 18px; margin: 14px 0 6px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sheet-title { color: #ff8a80; } }
+:root[data-theme="dark"] .sheet-title { color: #ff8a80; }
+.sheet-page { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 10px; }
+.row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.row:last-child { border-bottom: 0; }
+.row .lbl { font-size: 15px; }
+.row .use { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.sheet-note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+/* Bell curves */
+.curves { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 16px 0; }
+.curves figure { margin: 0; background: var(--paper); border: 1px solid var(--rule); padding: 10px; text-align: center; }
+.curves figcaption { font-size: 13px; font-weight: 600; color: var(--accent); }
+.curves svg { width: 100%; height: auto; display: block; }
+
+details { background: var(--paper); border: 1px solid var(--rule); margin: 8px 0; }
+summary { cursor: pointer; padding: 10px 14px; font-weight: 600; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+details > div { padding: 0 14px 12px; }
+.chk { list-style: none; padding: 0; }
+.chk li { padding-left: 26px; position: relative; }
+.chk li::before { content: ""; position: absolute; left: 2px; top: 6px; width: 13px; height: 13px; border: 1.5px solid var(--accent); border-radius: 2px; }
+a { color: var(--accent); }
+
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  nav.toc { position: static; padding-top: 20px; }
+  nav.toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .sheet { padding: 6px 14px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+<style>
+pre.code { background: var(--paper); border: 1px solid var(--rule); padding: 14px; overflow: auto; max-height: 460px; font: 12.5px/1.5 var(--mono); margin: 8px 0 0; }
+.copy { font: 600 13px var(--body); background: var(--accent); color: var(--paper); border: 0; padding: 7px 14px; cursor: pointer; margin-right: 10px; }
+.copy:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.sub-inline { font-weight: 400; color: var(--muted); font-size: 14px; }
+.wrap1 { max-width: 900px; margin: 0 auto; }
+</style>
+<div class="wrap1"><main>
+<header class="top">
+  <p class="eyebrow">MGSC 2301 · Exam 2 · TI-84 Evo Python</p>
+  <h1>EXAM2 Calculator Files</h1>
+  <p class="sub">The EXAM2 program in seven small Python files, so it fits in the calculator's Python memory. Same menus and reference cards as before, laid out like ECON2.</p>
+</header>
+
+<section>
+  <h2>Why it's seven files now</h2>
+  <p>The single 42 KB EXAM2.py stopped with <span class="keys">MemoryError: memory allocation failed</span> on line 1, before it ran. The calculator runs out of memory while compiling a file that size, and ECON2 (24 KB) is about the most it handles. EXAM2.py is now a 2.7 KB launcher. Each helper loads only while you're using it and is removed from memory afterward, so only about three files are in memory at once.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>File</th><th>What it holds</th><th class="n">Size</th></tr></thead>
+    <tbody><tr><td><a href="calcfiles/EXAM2.py">EXAM2.py</a></td><td>Start here. Main menu and reference-card menu.</td><td class="n">2.7 KB</td></tr><tr><td><a href="calcfiles/E2U.py">E2U.py</a></td><td>Shared math, input, cards and graph drawing.</td><td class="n">8.0 KB</td></tr><tr><td><a href="calcfiles/E2P.py">E2P.py</a></td><td>Probability, percent-to-cutoff, critical z/t.</td><td class="n">4.5 KB</td></tr><tr><td><a href="calcfiles/E2I.py">E2I.py</a></td><td>Confidence intervals, sample size, CI parts, std dev.</td><td class="n">4.6 KB</td></tr><tr><td><a href="calcfiles/E2Z.py">E2Z.py</a></td><td>Reference cards: z-score sheet and formula sheet.</td><td class="n">4.5 KB</td></tr><tr><td><a href="calcfiles/E2C.py">E2C.py</a></td><td>Reference cards: Chapters 6, 7 and 8.</td><td class="n">4.1 KB</td></tr><tr><td><a href="calcfiles/E2X.py">E2X.py</a></td><td>Reference cards: mix-ups, calculator tips, concepts.</td><td class="n">4.6 KB</td></tr></tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Put it on the calculator</h2>
+  <ol class="steps">
+    <li>Delete the old EXAM2 from the calculator first.</li>
+    <li>Save all seven files with the names exactly as shown (EXAM2, E2U, E2P, E2I, E2Z, E2C, E2X). Use the raw-file links, the copy buttons, or the files from the chat.</li>
+    <li>Open <strong>TI Connect CE</strong>, connect the calculator, and drag <strong>all seven</strong> .py files onto it.</li>
+    <li>On the calculator, open the <strong>Python</strong> app, select <strong>EXAM2</strong>, and run it. Don't run the E2 files directly. They're helpers.</li>
+    <li>If a menu says “Send E2__.py to the calculator too,” that file didn't transfer.</li>
+  </ol>
+  <div class="callout"><p><span class="lab">Still out of memory?</span> Quit the Python app and reopen it so memory starts empty, then run EXAM2 first. The program also catches memory errors during use and sends you back to the menu instead of crashing.</p></div>
+</section>
+
+<section>
+  <h2>Using it</h2>
+  <ul>
+    <li><strong>Main menu:</strong> 1 Reference cards · 2 Probability (x, x̄, p̄) · 3 Percent → cutoff · 4 Critical z / t · 5 Confidence interval · 6 Minimum sample size · 7 CI parts / std dev.</li>
+    <li><strong>Reference cards:</strong> 8 color-coded topics, 82 cards: z-score sheet, formula sheet, Chapters 6–8, mix-ups, calculator vs. table, concepts and exam rules.</li>
+    <li><strong>Paging:</strong> <kbd>enter</kbd> next, <span class="keys">1</span> previous, <span class="keys">2</span> jump to a page, <span class="keys">0</span> menu. Press <kbd>clear</kbd> to leave a drawn card. A blank entry cancels a calculation.</li>
+    <li><strong>Answers:</strong> TABLE is the course z-table method and matches the answer key. EXACT keeps full precision. When they differ, enter TABLE.</li>
+  </ul>
+  <p class="sheet-note">Tested on a computer against every Practice Test 2 answer, with a stand-in for the calculator's ti_draw screen, in both graphics and text mode, plus 1,500 random-input runs. It hasn't been run on a physical TI-84 Evo. Ask Professor Spencer before keeping it on the calculator during the exam.</p>
+</section>
+
+<section>
+  <h2>The files</h2>
+  <details><summary>EXAM2.py <span class="sub-inline">Start here. Main menu and reference-card menu.</span></summary><div>
+  <button class="copy" type="button" data-t="c0">Copy EXAM2.py</button> <a href="calcfiles/EXAM2.py">Open raw file</a>
+  <pre class="code" id="c0"># EXAM2 - TI-84 Evo Python, MGSC 2301 Exam 2 (Ch 6-8)
+# ECON2 menu/card layout. Plain ASCII, math + ti_draw.
+# Send ALL of these to the calculator:
+#   EXAM2 E2U E2P E2I E2Z E2C E2X  (.py)
+# Helpers load only while in use, to save memory.
+import sys
+from E2U import *
+
+# ---- reference cards (from E2Z, E2C, E2X) ----
+# Each module has get(i) -&gt; list of
+# &quot;Title|line\nline|label;numerator;denominator&quot; strings.
+MODS = [(&quot;E2Z&quot;, 0), (&quot;E2Z&quot;, 1), (&quot;E2C&quot;, 0), (&quot;E2C&quot;, 1), (&quot;E2C&quot;, 2), (&quot;E2X&quot;, 0), (&quot;E2X&quot;, 1), (&quot;E2X&quot;, 2)]
+NAMES = [&quot;Z-score sheet&quot;, &quot;Formula sheet&quot;, &quot;Ch 6 normal&quot;, &quot;Ch 7 sampling&quot;, &quot;Ch 8 intervals&quot;,
+         &quot;Mix-ups&quot;, &quot;Calculator / table&quot;, &quot;Concepts / exam&quot;]
+
+def imp(name):
+  try:
+    return __import__(name)
+  except ImportError:
+    raise ValueError(&quot;Send &quot; + name + &quot;.py to the calculator too&quot;)
+
+def free(name):
+  # drop a helper module so its memory comes back
+  try:
+    del sys.modules[name]
+  except Exception:
+    pass
+  gc.collect()
+
+def run(name, fn):
+  m = imp(name)
+  try:
+    getattr(m, fn)()
+  finally:
+    del m
+    free(name)
+
+def load(i):
+  name, j = MODS[i]
+  m = imp(name)
+  raw = m.get(j)
+  del m
+  free(name)
+  cs = []
+  for r in raw:
+    p = r.split(&quot;|&quot;)
+    cs += mk(p[0], p[1], tuple(p[2].split(&quot;;&quot;)) if len(p) &gt; 2 else None)
+  del raw
+  gc.collect()
+  return cs
+
+def refs():
+  while True:
+    disp_clr()
+    print(&quot;--- REFERENCE CARDS ---&quot;)
+    for i in range(8):
+      print(str(i + 1) + &quot; &quot; + NAMES[i])
+    print(&quot;0 Main menu&quot;)
+    s = input(&quot;&gt; &quot;).strip()
+    if s == &quot;0&quot;:
+      return
+    if len(s) == 1 and s in &quot;12345678&quot;:
+      i = int(s) - 1
+      cs = load(i)
+      ACC[0] = COLS[i]
+      try:
+        browse(cs)
+      finally:
+        ACC[0] = NAVY
+        del cs
+        gc.collect()
+
+def main():
+  while True:
+    disp_clr()
+    print(&quot;=== EXAM2: CH 6-8 ===&quot;)
+    print(&quot;1 Reference cards&quot;)
+    print(&quot;2 Probability x/xbar/pbar&quot;)
+    print(&quot;3 Percent -&gt; cutoff&quot;)
+    print(&quot;4 Critical z / t&quot;)
+    print(&quot;5 Confidence interval&quot;)
+    print(&quot;6 Minimum sample size&quot;)
+    print(&quot;7 CI parts / std dev&quot;)
+    print(&quot;0 Exit&quot;)
+    s = input(&quot;&gt; &quot;).strip()
+    if s == &quot;0&quot;:
+      break
+    try:
+      if s == &quot;1&quot;:
+        refs()
+      elif s in [&quot;2&quot;, &quot;3&quot;, &quot;4&quot;]:
+        run(&quot;E2P&quot;, [&quot;prob&quot;, &quot;cutoff&quot;, &quot;crit&quot;][int(s) - 2])
+      elif s in [&quot;5&quot;, &quot;6&quot;, &quot;7&quot;]:
+        run(&quot;E2I&quot;, [&quot;ci&quot;, &quot;size&quot;, &quot;more&quot;][int(s) - 5])
+    except ValueError as e:
+      disp_clr()
+      print(str(e))
+      input(&quot;ENTER: menu&quot;)
+    except ZeroDivisionError:
+      disp_clr()
+      print(&quot;Undefined: zero denominator&quot;)
+      input(&quot;ENTER: menu&quot;)
+    except MemoryError:
+      disp_clr()
+      print(&quot;Out of memory. Close other&quot;)
+      print(&quot;apps, then rerun EXAM2.&quot;)
+      input(&quot;ENTER: menu&quot;)
+    gc.collect()
+
+main()
+</pre></div></details>
+<details><summary>E2U.py <span class="sub-inline">Shared math, input, cards and graph drawing.</span></summary><div>
+  <button class="copy" type="button" data-t="c1">Copy E2U.py</button> <a href="calcfiles/E2U.py">Open raw file</a>
+  <pre class="code" id="c1"># E2U - shared math, input and screen code for EXAM2.
+# Keep with EXAM2.py. Plain ASCII, math + ti_draw.
+# TABLE = course z-table method (matches key).
+# EXACT = full calculator precision.
+import math
+import gc
+try:
+  import ti_draw as dr
+  GR = True
+except ImportError:
+  GR = False
+try:
+  from ti_system import disp_clr
+except ImportError:
+  def disp_clr():
+    print(&quot;\n&quot; * 3)
+
+def parse(s):
+  for c in s.replace(&quot;sqrt&quot;, &quot;&quot;):
+    if c not in &quot;0123456789.+-*/() &quot;:
+      raise ValueError(&quot;Use digits, / and sqrt()&quot;)
+  try:
+    return float(eval(s, {&quot;sqrt&quot;: math.sqrt}))
+  except ZeroDivisionError:
+    raise ValueError(&quot;Zero denominator&quot;)
+  except Exception:
+    raise ValueError(&quot;Not a number&quot;)
+
+def rnd(x, d):
+  m = 10 ** d
+  g = -1 if x &lt; 0 else 1
+  return g * math.floor(abs(x) * m + 0.5 + 1e-9) / m
+
+def f4(x):
+  return &quot;%.4f&quot; % x
+
+def f2(x):
+  return &quot;%.2f&quot; % x
+
+def sh(x):
+  return &quot;%.6g&quot; % x
+
+# ---- normal and t ----
+try:
+  erf = math.erf
+except AttributeError:
+  def erf(x):
+    g = -1 if x &lt; 0 else 1
+    x = abs(x)
+    if x &gt; 6:
+      return g
+    t = s = x
+    k = 0
+    while t &gt; 1e-16 * s:
+      k += 1
+      t = t * 2 * x * x / (2 * k + 1)
+      s += t
+    return g * 1.1283791670955126 * math.exp(-x * x) * s
+
+def phi(z):
+  return 0.5 * (1 + erf(z / 1.4142135623730951))
+
+def tphi(z):
+  z = rnd(z, 2)
+  if z &lt; -3.49:
+    return 0.0
+  if z &gt; 3.49:
+    return 1.0
+  return rnd(phi(z), 4)
+
+def bis(f, a, lo, hi):
+  # x in [lo,hi] where increasing f(x) = a
+  for i in range(48):
+    m = (lo + hi) / 2
+    if f(m) &lt; a:
+      lo = m
+    else:
+      hi = m
+  return (lo + hi) / 2
+
+def invphi(a):
+  return bis(phi, a, -9.0, 9.0)
+
+def tablez(a):
+  # closest 4-place table area; a tie takes the midpoint
+  z0 = rnd(invphi(a), 2)
+  best = 9
+  zs = []
+  for i in range(-3, 4):
+    z = rnd(z0 + i / 100, 2)
+    d = abs(rnd(phi(z), 4) - a)
+    if d &lt; best - 1e-9:
+      best = d
+      zs = [z]
+    elif abs(d - best) &lt;= 1e-9:
+      zs.append(z)
+  return rnd(sum(zs) / len(zs), 3)
+
+def tcdf(t, v):
+  # P(T &lt; t) for t &gt;= 0, whole df (exact series)
+  th = math.atan(t / math.sqrt(v))
+  c2 = math.cos(th) ** 2
+  w = 1.0
+  tot = 1.0
+  if v % 2:
+    for k in range(1, (v - 1) // 2):
+      w *= c2 * 2 * k / (2 * k + 1)
+      tot += w
+    a = th + (math.sin(th) * math.cos(th) * tot if v &gt; 1 else 0)
+    a = 2 * a / math.pi
+  else:
+    for k in range(1, v // 2):
+      w *= c2 * (2 * k - 1) / (2 * k)
+      tot += w
+    a = math.sin(th) * tot
+  return (1 + a) / 2
+
+def invt(up, v):
+  # positive t with upper-tail area up
+  if v &gt; 200:
+    z = invphi(1 - up)
+    return z + (z ** 3 + z) / (4 * v) + (5 * z ** 5 + 16 * z ** 3 + 3 * z) / (96 * v * v)
+  return bis(lambda t: tcdf(t, v), 1 - up, 0.0, 1000.0)
+
+TZ = {80: 1.28, 90: 1.645, 95: 1.96, 98: 2.33, 99: 2.576}
+
+def zcrit(c):
+  up = 1 - (1 - c / 100) / 2
+  k = int(c + 0.5)
+  if k in TZ and abs(c - k) &lt; 1e-9:
+    return TZ[k], invphi(up)
+  return tablez(up), invphi(up)
+
+# ---- input ----
+def ask(label, pos=False, nonneg=False):
+  while True:
+    disp_clr()
+    print(label)
+    print(&quot;Number, a/b, or sqrt()&quot;)
+    print(&quot;Blank = cancel&quot;)
+    s = input(&quot;&gt; &quot;).strip()
+    if s == &quot;&quot;:
+      raise ValueError(&quot;Cancelled&quot;)
+    try:
+      x = parse(s)
+      if pos and x &lt;= 0:
+        raise ValueError(&quot;Must be positive&quot;)
+      if nonneg and x &lt; 0:
+        raise ValueError(&quot;Cannot be negative&quot;)
+      return x
+    except ValueError as e:
+      print(str(e))
+      input(&quot;ENTER to retry&quot;)
+
+def askp(label):
+  p = ask(label + &quot; (.66 or 66)&quot;, True)
+  if p &gt; 1:
+    p /= 100
+  if p &gt;= 1:
+    raise ValueError(&quot;Need 0 &lt; p &lt; 1&quot;)
+  return p
+
+def askc():
+  c = ask(&quot;Confidence % (95 or .95)&quot;, True)
+  if c &lt; 1:
+    c *= 100
+  if c &gt;= 100:
+    raise ValueError(&quot;Need under 100%&quot;)
+  return c
+
+def pick(lines, n):
+  disp_clr()
+  for s in lines:
+    print(s)
+  k = input(&quot;&gt; &quot;).strip()
+  return int(k) if k in [str(i) for i in range(1, n + 1)] else 0
+
+# ---- screen and cards (ECON2 layout) ----
+def wrap(t, w=28):
+  out = []
+  line = &quot;&quot;
+  for word in t.split():
+    if len(word) &gt; w:
+      word = word[:w]
+    if line and len(line) + len(word) + 1 &gt; w:
+      out.append(line)
+      line = word
+    else:
+      line = word if not line else line + &quot; &quot; + word
+  if line:
+    out.append(line)
+  return out
+
+def ink(c):
+  dr.set_color(c[0], c[1], c[2])
+
+NAVY = (10, 65, 100)
+COLS = [(10, 65, 100), (0, 105, 75), (150, 75, 0), (130, 35, 110),
+        (165, 35, 45), (55, 60, 135), (0, 110, 130), (110, 85, 20)]
+ACC = [NAVY]
+
+def tint(c):
+  return (c[0] + (255 - c[0]) * 7 // 8, c[1] + (255 - c[1]) * 7 // 8, c[2] + (255 - c[2]) * 7 // 8)
+
+def box(x, y, w, h):
+  try:
+    dr.fill_rect(x, y, w, h)
+  except Exception:
+    pass
+
+def frame(title, tag, i=0, n=0):
+  a = ACC[0]
+  dr.clear()
+  dr.set_pen(&quot;thin&quot;, &quot;solid&quot;)
+  ink(tint(a))
+  box(0, 0, 320, 24)
+  ink(a)
+  dr.draw_text(8, 5, title)
+  box(0, 24, 320, 2)
+  if n &gt; 1:
+    ink((205, 210, 215))
+    box(0, 26, 320, 3)
+    ink(a)
+    box(0, 26, 320 * i // n, 3)
+  ink((232, 235, 238))
+  box(0, 188, 320, 22)
+  ink((70, 70, 70))
+  dr.draw_text(8, 192, tag)
+
+def mk(title, body, fr=None):
+  # card = (title, lines, fraction); overflow goes to extra pages
+  flat = []
+  for s in (body.split(&quot;\n&quot;) if isinstance(body, str) else body):
+    if s[:1] == &quot;!&quot;:
+      flat += [&quot;!&quot; + w for w in wrap(s[1:], 27)]
+    else:
+      flat += wrap(s) if s else [&quot;&quot;]
+  room = 4 if fr else 8
+  out = [(title, flat[:room], fr)]
+  flat = flat[room:]
+  while flat:
+    out.append((title, flat[:8], None))
+    flat = flat[8:]
+  return out
+
+def show(cd, i=1, n=1):
+  title, lines, fr = cd
+  foot = &quot;Page %d of %d   CLEAR = nav&quot; % (i, n) if n &gt; 1 else &quot;Press CLEAR&quot;
+  if GR:
+    a = ACC[0]
+    frame(title, foot, i, n)
+    y = 35
+    if fr:
+      ink(tint(a))
+      box(4, 31, 312, 74)
+      ink(a)
+      dr.draw_text(10, 33, fr[0] + &quot; =&quot;)
+      ink((25, 25, 25))
+      dr.draw_text(24, 52, fr[1])
+      ink(a)
+      dr.draw_line(20, 73, 300, 73)
+      dr.draw_line(20, 74, 300, 74)
+      ink((25, 25, 25))
+      dr.draw_text(24, 79, fr[2])
+      y = 112
+    for s in lines:
+      if s[:1] == &quot;!&quot;:
+        ink(tint(a))
+        box(4, y - 2, 312, 19)
+        ink(a)
+        box(4, y - 2, 3, 19)
+        ink((0, 0, 0))
+        dr.draw_text(12, y, s[1:])
+      else:
+        ink(a if s[-1:] == &quot;:&quot; else (25, 25, 25))
+        dr.draw_text(8, y, s)
+      y += 18
+    dr.show_draw()
+  else:
+    disp_clr()
+    print(&quot;== &quot; + title + &quot; ==&quot;)
+    if fr:
+      print(fr[0] + &quot; =&quot;)
+      print(&quot;  &quot; + fr[1])
+      print(&quot; &quot; + &quot;-&quot; * 26)
+      print(&quot;  &quot; + fr[2])
+    for s in lines:
+      print(&quot;&gt;&gt; &quot; + s[1:] if s[:1] == &quot;!&quot; else s)
+
+def browse(cards):
+  i = 0
+  n = len(cards)
+  while True:
+    show(cards[i], i + 1, n)
+    disp_clr()
+    print(&quot;ENTER next | 1 previous&quot;)
+    print(&quot;2 jump to page | 0 menu&quot;)
+    c = input(&quot;&gt; &quot;).strip()
+    if c == &quot;0&quot;:
+      return
+    if c == &quot;1&quot;:
+      i = (i - 1) % n
+    elif c == &quot;2&quot;:
+      try:
+        j = int(input(&quot;Page 1-%d: &quot; % n))
+        if 1 &lt;= j &lt;= n:
+          i = j - 1
+      except ValueError:
+        pass
+    else:
+      i = (i + 1) % n
+
+def note(title, body):
+  for cd in mk(title, body):
+    show(cd)
+    if not GR:
+      input(&quot;ENTER: continue&quot;)
+
+# ---- normal-curve graph ----
+def cy(z):
+  return int(160 - 118 * math.exp(-z * z / 2))
+
+def graph(k, za, zb, label):
+  # k: 1 below, 2 above, 3 between, 4 outside
+  if not GR:
+    return
+  disp_clr()
+  if input(&quot;1 View graph; ENTER menu: &quot;).strip() != &quot;1&quot;:
+    return
+  frame(&quot;Shaded area&quot;, &quot;CLEAR: return to menu&quot;)
+  ink((150, 200, 190))
+  for px in range(23, 298):
+    z = (px - 160) / 38
+    if (k == 1 and z &lt;= za) or (k == 2 and z &gt;= za) or (k == 3 and za &lt;= z &lt;= zb) or (k == 4 and (z &lt;= za or z &gt;= zb)):
+      dr.draw_line(px, 160, px, cy(z))
+  ink((0, 0, 0))
+  dr.draw_line(20, 160, 300, 160)
+  ink(ACC[0])
+  for px in range(23, 296, 2):
+    dr.draw_line(px, cy((px - 160) / 38), px + 2, cy((px - 158) / 38))
+  ink((70, 70, 70))
+  for z in ([za] if k &lt;= 2 else [za, zb]):
+    z = max(-3.6, min(3.6, z))
+    x = int(160 + z * 38)
+    dr.draw_line(x, 160, x, cy(z))
+    s = f2(z)
+    dr.draw_text(max(4, min(x - 14, 316 - 10 * len(s))), 164, s)
+  ink((0, 0, 0))
+  dr.draw_text(8, 171, label)
+  dr.show_draw()
+
+</pre></div></details>
+<details><summary>E2P.py <span class="sub-inline">Probability, percent-to-cutoff, critical z/t.</span></summary><div>
+  <button class="copy" type="button" data-t="c2">Copy E2P.py</button> <a href="calcfiles/E2P.py">Open raw file</a>
+  <pre class="code" id="c2"># E2P - probability, cutoff and critical values for EXAM2.
+# Loaded only while in use. Keep with EXAM2.py.
+from E2U import *
+
+# ---- probability (Ch 6, Ch 7) ----
+RULE = [&quot;&quot;, &quot;left area&quot;, &quot;1 - left area&quot;, &quot;left(b) - left(a)&quot;, &quot;1 - between&quot;]
+WHAT = [&quot;&quot;, &quot;Below a&quot;, &quot;Above a&quot;, &quot;Between a and b&quot;, &quot;Outside a to b&quot;]
+
+def area(pa, pb, k):
+  return [0, pa, 1 - pa, pb - pa, 1 - pb + pa][k]
+
+def prob():
+  w = pick([&quot;1 One value x (Ch 6)&quot;, &quot;2 Sample mean xbar (Ch 7)&quot;, &quot;3 Sample prop pbar (Ch 7)&quot;, &quot;0 Cancel&quot;], 3)
+  if not w:
+    return
+  if w == 3:
+    c = askp(&quot;Population proportion p&quot;)
+    n = ask(&quot;Sample size n&quot;, True)
+    se = math.sqrt(c * (1 - c) / n)
+    st = rnd(se, 4)
+    ok = n * c &gt;= 5 and n * (1 - c) &gt;= 5
+    cs = mk(&quot;Setup: sample prop&quot;, [&quot;np = &quot; + f2(n * c), &quot;n(1-p) = &quot; + f2(n * (1 - c)),
+            &quot;Both &gt;= 5: normal&quot; if ok else &quot;NOT both &gt;= 5!&quot;, &quot;!SE = &quot; + f4(se)],
+            (&quot;SE&quot;, &quot;sqrt[ &quot; + sh(c) + &quot;(&quot; + sh(1 - c) + &quot;) ]&quot;, &quot;sqrt(&quot; + sh(n) + &quot;)&quot;))
+  else:
+    c = ask(&quot;Population mean mu&quot;)
+    sg = ask(&quot;Population sigma&quot;, True)
+    n = ask(&quot;Sample size n&quot;, True) if w == 2 else 1
+    se = st = sg / math.sqrt(n)
+    if w == 2:
+      cs = mk(&quot;Setup: sample mean&quot;, [&quot;E(xbar) = mu = &quot; + sh(c), &quot;!SE = &quot; + f4(se),
+              &quot;n &gt;= 30: approx normal&quot; if n &gt;= 30 else &quot;n &lt; 30: pop must be normal&quot;],
+              (&quot;SE&quot;, sh(sg), &quot;sqrt(&quot; + sh(n) + &quot;)&quot;))
+    else:
+      cs = mk(&quot;Setup: one value&quot;, [&quot;Center mu = &quot; + sh(c), &quot;Spread sigma = &quot; + sh(sg)], (&quot;z&quot;, &quot;x - mu&quot;, &quot;sigma&quot;))
+  k = pick([&quot;1 Below a | 2 Above a&quot;, &quot;3 Between | 4 Outside&quot;, &quot;5 Within +/-d of center&quot;, &quot;0 Cancel&quot;], 5)
+  if not k:
+    return
+  if k == 5:
+    d = ask(&quot;Distance d from center&quot;, True)
+    a, b, k = c - d, c + d, 3
+  elif k &gt; 2:
+    a = ask(&quot;Lower value a&quot;)
+    b = ask(&quot;Upper value b&quot;)
+    if b &lt; a:
+      a, b = b, a
+  else:
+    a = b = ask(&quot;Value a&quot;)
+  za, zb = (a - c) / se, (b - c) / se
+  ta, tb = rnd((a - c) / st, 2), rnd((b - c) / st, 2)
+  for v, z, t in ((&quot;a&quot;, za, ta), (&quot;b&quot;, zb, tb))[:1 if k &lt; 3 else 2]:
+    cs += mk(&quot;z for &quot; + v, [&quot;z = &quot; + f4(z), &quot;!Table z = &quot; + f2(t), &quot;Left area = &quot; + f4(tphi(t))],
+             (&quot;z&quot;, sh(a if v == &quot;a&quot; else b) + &quot; - &quot; + sh(c), f4(st)))
+  pt = area(tphi(ta), tphi(tb), k)
+  ans = [WHAT[k], &quot;Rule: &quot; + RULE[k], &quot;!TABLE P = &quot; + f4(pt), &quot;EXACT P = &quot; + f4(area(phi(za), phi(zb), k)),
+         &quot;Percent: &quot; + f2(pt * 100) + &quot;%&quot;]
+  if k &gt; 2:
+    ans.append(&quot;Subtract AREAS, not z.&quot;)
+  browse(cs + mk(&quot;Answer&quot;, ans))
+  graph(k, ta, tb, &quot;P = &quot; + f4(pt))
+
+# ---- percent -&gt; cutoff ----
+def cutoff():
+  k = pick([&quot;1 Bottom __% (below)&quot;, &quot;2 Top __% (above)&quot;, &quot;3 Middle __%&quot;, &quot;0 Cancel&quot;], 3)
+  if not k:
+    return
+  p = askp(&quot;Percent&quot;)
+  L = [p] if k == 1 else ([1 - p] if k == 2 else [(1 - p) / 2, (1 + p) / 2])
+  g = pick([&quot;Solve for:&quot;, &quot;1 Cutoff, one x&quot;, &quot;2 Cutoff, xbar&quot;, &quot;3 Cutoff, pbar&quot;, &quot;4 Unknown mean mu&quot;, &quot;0 Cancel&quot;], 4)
+  if not g:
+    return
+  if g == 3:
+    c = askp(&quot;Population proportion p&quot;)
+    n = ask(&quot;Sample size n&quot;, True)
+    se = math.sqrt(c * (1 - c) / n)
+    st = rnd(se, 4)
+  else:
+    c = ask(&quot;Known value x&quot; if g == 4 else &quot;Population mean mu&quot;)
+    sg = ask(&quot;Population sigma&quot;, True)
+    se = st = sg / math.sqrt(ask(&quot;Sample size n&quot;, True)) if g == 2 else sg
+  cs = []
+  for a in L:
+    zt, ze = tablez(a), invphi(a)
+    cs += mk(&quot;LEFT area &quot; + f4(a), [&quot;Find &quot; + f4(a) + &quot; INSIDE table.&quot;, &quot;!Table z = &quot; + str(zt), &quot;Calculator z = &quot; + f4(ze)])
+    if g == 4:
+      cs += mk(&quot;Unknown mean&quot;, [&quot;mu = x - (z)(sigma)&quot;, &quot;= &quot; + sh(c) + &quot; - (&quot; + str(zt) + &quot;)(&quot; + sh(st) + &quot;)&quot;,
+               &quot;!TABLE mu = &quot; + f4(c - zt * st), &quot;EXACT mu = &quot; + f4(c - ze * se)])
+    else:
+      cs += mk(&quot;Cutoff&quot;, [&quot;= center + (z)(SE)&quot;, &quot;= &quot; + sh(c) + &quot; + (&quot; + str(zt) + &quot;)(&quot; + sh(st) + &quot;)&quot;,
+               &quot;!TABLE = &quot; + f4(c + zt * st), &quot;EXACT = &quot; + f4(c + ze * se)])
+  browse(cs)
+  z1 = tablez(L[0])
+  graph(k, z1, tablez(L[-1]), [&quot;&quot;, &quot;Bottom &quot;, &quot;Top &quot;, &quot;Middle &quot;][k] + f2(p * 100) + &quot;%&quot;)
+
+# ---- critical values ----
+def crit():
+  c = askc()
+  al = 1 - c / 100
+  tb, ex = zcrit(c)
+  cs = mk(&quot;Critical probabilities&quot;, [&quot;Confidence &quot; + sh(c) + &quot;%&quot;, &quot;alpha = &quot; + f4(al), &quot;!alpha/2 = &quot; + f4(al / 2),
+          &quot;!1 - alpha/2 = &quot; + f4(1 - al / 2)])
+  cs += mk(&quot;Critical z&quot;, [&quot;!Table z = +/-&quot; + str(tb), &quot;Calculator z = &quot; + f4(ex), &quot;sigma known, proportions,&quot;, &quot;sample size.&quot;])
+  disp_clr()
+  s = input(&quot;n for a t value (ENTER skip): &quot;).strip()
+  if s:
+    v = int(parse(s) - 1 + 0.5)
+    if v &gt;= 1:
+      cs += mk(&quot;Critical t&quot;, [&quot;df = n - 1 = %d&quot; % v, &quot;Upper area &quot; + f4(al / 2), &quot;!t = +/-%.3f&quot; % invt(al / 2, v), &quot;Only s given.&quot;])
+  browse(cs)
+
+</pre></div></details>
+<details><summary>E2I.py <span class="sub-inline">Confidence intervals, sample size, CI parts, std dev.</span></summary><div>
+  <button class="copy" type="button" data-t="c3">Copy E2I.py</button> <a href="calcfiles/E2I.py">Open raw file</a>
+  <pre class="code" id="c3"># E2I - intervals, sample size and CI tools for EXAM2.
+# Loaded only while in use. Keep with EXAM2.py.
+from E2U import *
+
+# ---- confidence intervals ----
+def ival(est, et, ee, what):
+  d = min(int(ask(&quot;Decimals the question wants&quot;, nonneg=True)), 6)
+  fm = &quot;%.&quot; + str(d) + &quot;f&quot;
+  return mk(&quot;Interval&quot;, [&quot;!TABLE (&quot; + fm % (est - et) + &quot;, &quot; + fm % (est + et) + &quot;)&quot;,
+            &quot;EXACT (&quot; + fm % (est - ee) + &quot;, &quot; + fm % (est + ee) + &quot;)&quot;, &quot;Width = 2E = &quot; + fm % (2 * et),
+            &quot;We are __% confident the&quot;, what, &quot;is in this interval.&quot;])
+
+def ci():
+  k = pick([&quot;1 mu, sigma known (z)&quot;, &quot;2 mu, only s given (t)&quot;, &quot;3 p from pbar&quot;, &quot;4 p from count x&quot;, &quot;0 Cancel&quot;], 4)
+  if not k:
+    return
+  if k &lt; 3:
+    xb = ask(&quot;Sample mean xbar&quot;)
+    sg = ask(&quot;Population sigma&quot; if k == 1 else &quot;Sample s&quot;, True)
+    n = ask(&quot;Sample size n&quot;, True)
+    c = askc()
+    se = sg / math.sqrt(n)
+    cs = mk(&quot;Standard error&quot;, [&quot;!SE = &quot; + f4(se)], (&quot;SE&quot;, sh(sg), &quot;sqrt(&quot; + sh(n) + &quot;)&quot;))
+    if k == 1:
+      tb, ex = zcrit(c)
+      cs += mk(&quot;Critical z&quot;, [&quot;sigma known -&gt; z&quot;, &quot;!Table z = &quot; + str(tb), &quot;Calculator z = &quot; + f4(ex)])
+    else:
+      if n &lt; 2:
+        raise ValueError(&quot;Need n &gt;= 2&quot;)
+      v = int(n - 1 + 0.5)
+      up = (1 - c / 100) / 2
+      ex = invt(up, v)
+      note(&quot;t-table lookup&quot;, [&quot;Row: df = %d&quot; % v, &quot;Column: upper &quot; + f4(up), &quot;!Exact t = %.3f&quot; % ex,
+           &quot;n &lt; 30: needs normal pop&quot; if n &lt; 30 else &quot;t even with n &gt;= 30&quot;, &quot;Next: YOUR table t&quot;])
+      tb = ask(&quot;Your table t (0 = exact)&quot;, nonneg=True) or rnd(ex, 3)
+    cs += mk(&quot;Margin of error&quot;, [&quot;E = (crit)(SE)&quot;, &quot;= (&quot; + sh(tb) + &quot;)(&quot; + f4(se) + &quot;)&quot;, &quot;!E = &quot; + f4(tb * se),
+             &quot;Exact E = &quot; + f4(ex * se)])
+    browse(cs + ival(xb, tb * se, ex * se, &quot;population mean&quot;))
+    return
+  if k == 4:
+    x = ask(&quot;Count x&quot;, nonneg=True)
+    n = ask(&quot;Sample size n&quot;, True)
+    pb = x / n
+  else:
+    pb = askp(&quot;Sample proportion pbar&quot;)
+    n = ask(&quot;Sample size n&quot;, True)
+  c = askc()
+  tb, ex = zcrit(c)
+  se = math.sqrt(pb * (1 - pb) / n)
+  ok = n * pb &gt;= 5 and n * (1 - pb) &gt;= 5
+  cs = mk(&quot;Check + SE&quot;, [&quot;pbar = &quot; + f4(pb), &quot;Counts &quot; + f2(n * pb) + &quot;, &quot; + f2(n * (1 - pb)),
+          &quot;Both &gt;= 5: OK&quot; if ok else &quot;Counts &lt; 5: not normal&quot;, &quot;!SE = &quot; + f4(se)],
+          (&quot;SE&quot;, &quot;sqrt[ &quot; + f4(pb) + &quot;(&quot; + f4(1 - pb) + &quot;) ]&quot;, &quot;sqrt(&quot; + sh(n) + &quot;)&quot;))
+  cs += mk(&quot;Margin of error&quot;, [&quot;z table &quot; + str(tb) + &quot;, exact &quot; + f4(ex), &quot;SE uses pbar (p unknown).&quot;,
+           &quot;!E = &quot; + f4(tb * se), &quot;Exact E = &quot; + f4(ex * se)])
+  browse(cs + ival(pb, tb * se, ex * se, &quot;population proportion&quot;))
+
+# ---- minimum sample size ----
+def size():
+  k = pick([&quot;1 Mean, sigma given&quot;, &quot;2 Mean, use range/4&quot;, &quot;3 Proportion&quot;, &quot;0 Cancel&quot;], 3)
+  if not k:
+    return
+  if k == 3:
+    e = ask(&quot;Margin E (3 pts = .03)&quot;, True)
+    if e &gt;= 1:
+      e /= 100
+    disp_clr()
+    s = input(&quot;Pilot p* (ENTER = .50): &quot;).strip()
+    p = parse(s) if s else 0.5
+    if p &gt;= 1:
+      p /= 100
+    if not 0 &lt; p &lt; 1:
+      raise ValueError(&quot;Need 0 &lt; p* &lt; 1&quot;)
+    c = askc()
+    tb, ex = zcrit(c)
+    vt, ve = tb * tb * p * (1 - p) / e / e, ex * ex * p * (1 - p) / e / e
+    fr = (&quot;n&quot;, &quot;(&quot; + str(tb) + &quot;)^2 (&quot; + sh(p) + &quot;)(&quot; + sh(1 - p) + &quot;)&quot;, &quot;(&quot; + sh(e) + &quot;)^2&quot;)
+  else:
+    sg = ask(&quot;Range (max - min)&quot;, True) / 4 if k == 2 else ask(&quot;Population sigma&quot;, True)
+    e = ask(&quot;Margin E&quot;, True)
+    c = askc()
+    tb, ex = zcrit(c)
+    vt, ve = (tb * sg / e) ** 2, (ex * sg / e) ** 2
+    fr = (&quot;n&quot;, &quot;[ (&quot; + str(tb) + &quot;)(&quot; + sh(sg) + &quot;) ]^2&quot;, &quot;(&quot; + sh(e) + &quot;)^2&quot;)
+  browse(mk(&quot;Minimum n&quot;, [&quot;n = &quot; + f4(vt), &quot;!Round UP: %d&quot; % math.ceil(vt - 1e-9),
+            &quot;Exact z: %d&quot; % math.ceil(ve - 1e-9), &quot;Always round up.&quot;], fr))
+
+# ---- more ----
+def more():
+  k = pick([&quot;1 From a CI: center, E&quot;, &quot;2 Std dev from raw data&quot;, &quot;0 Cancel&quot;], 2)
+  if k == 1:
+    lo = ask(&quot;Lower endpoint L&quot;)
+    hi = ask(&quot;Upper endpoint U&quot;)
+    browse(mk(&quot;From a CI&quot;, [&quot;center = (L + U) / 2&quot;, &quot;!center = &quot; + sh((lo + hi) / 2), &quot;E = (U - L) / 2&quot;,
+              &quot;!E = &quot; + sh((hi - lo) / 2), &quot;Width = &quot; + sh(hi - lo)]))
+  elif k == 2:
+    xs = []
+    while True:
+      disp_clr()
+      print(&quot;Value x%d (blank = done)&quot; % (len(xs) + 1))
+      s = input(&quot;&gt; &quot;).strip()
+      if not s:
+        break
+      try:
+        xs.append(parse(s))
+      except ValueError as e:
+        print(str(e))
+        input(&quot;ENTER to retry&quot;)
+    n = len(xs)
+    if n &lt; 2:
+      raise ValueError(&quot;Need 2 or more values&quot;)
+    m = sum(xs) / n
+    ss = sum([(x - m) ** 2 for x in xs])
+    browse(mk(&quot;Std dev&quot;, [&quot;n = %d, mean = &quot; % n + f4(m), &quot;Sum (x-mean)^2 = &quot; + f4(ss),
+              &quot;!Population sigma = &quot; + f4(math.sqrt(ss / n)), &quot;(divide by N)&quot;,
+              &quot;!Sample s = &quot; + f4(math.sqrt(ss / (n - 1))), &quot;(divide by n - 1)&quot;]))
+
+</pre></div></details>
+<details><summary>E2Z.py <span class="sub-inline">Reference cards: z-score sheet and formula sheet.</span></summary><div>
+  <button class="copy" type="button" data-t="c4">Copy E2Z.py</button> <a href="calcfiles/E2Z.py">Open raw file</a>
+  <pre class="code" id="c4"># E2Z - reference cards for EXAM2 (keep with EXAM2.py).
+# Card: &quot;Title|line\nline|label;numerator;denominator&quot;
+# Lines starting with ! are answers; ending with : are subheads.
+
+def get(i):
+  # Z-score sheet
+  if i == 0:
+    return [
+      &#x27;One value (Ch 6)|Center mu, spread sigma.\nOne person, fish, bill.|z;x - mu;sigma&#x27;,
+      &#x27;Sample mean (Ch 7)|SE = sigma / sqrt(n)\nAverage of n items.\nNever plain sigma.|z xbar;xbar - mu;sigma / sqrt(n)&#x27;,
+      &#x27;Sample prop (Ch 7)|SE uses KNOWN p.\nCount given: pbar = x/n.|z pbar;pbar - p;sqrt( p(1-p) / n )&#x27;,
+      &#x27;Backwards: value from z|x = mu + (z)(sigma)\nmu = x - (z)(sigma)\nxbar cutoff:\nmu + (z)(sigma/sqrt(n))\nBelow-mean cutoff: z &lt; 0\nso x comes out below mu.&#x27;,
+      &#x27;What z means|z = SDs from the center.\nz = 1.5: 1.5 SD above.\nz &lt; 0: below, left &lt; .5\nz &gt; 0: above, left &gt; .5\nz = 0: mean, area .5000\n68/95/99.7: 1, 2, 3 SD\nP(X = a) = 0 exactly.&#x27;,
+      &#x27;Reading the z-table|Table = area to the LEFT.\nRound z to 2 places first.\nRow: ones + tenths (1.2)\nColumn: hundredths (.04)\n!z = 1.24 -&gt; .8925\nNegative: row -1.7,\ncol .05 -&gt; -1.75 = .0401&#x27;,
+      &#x27;Area rules|Below a: left(a)\nAbove a: 1 - left(a)\nBetween: left(b) - left(a)\nOutside: 1 - between\nWithin +/-d of center:\nleft(+z) - left(-z)\n!Subtract AREAS, not z.&#x27;,
+      &#x27;Inverse: % to cutoff|1 Wording -&gt; LEFT area\n2 Find area INSIDE table\n3 Closest cell gives z\n4 x = mu + (z)(sigma)\nExactly halfway: average\n!.95 -&gt; 1.645 (midpoint)&#x27;,
+      &#x27;Wording -&gt; LEFT area|Bottom 20% -&gt; .20\nTop 10% -&gt; .90\n67.72% above x -&gt; .3228\nx above 86.65% -&gt; .8665\nMiddle 95% -&gt; .025, .975\n!Top __% means 1 - __.&#x27;,
+      &#x27;Percentile z values|.01 -2.33, .99 2.33\n.025 -1.96, .975 1.96\n.05 -1.645, .95 1.645\n.10 -1.28, .90 1.28\n.20 -0.84, .80 0.84\n.25 -0.67, .75 0.67\n.30 -0.52, .70 0.52\n.40 -0.25, .60 0.25&#x27;,
+      &#x27;z -&gt; areas|z: left, right, within\n1.00: .8413 .1587 .6826\n1.28: .8997 .1003 .7994\n1.645: .9500 .0500 .9000\n1.96: .9750 .0250 .9500\n2.33: .9901 .0099 .9802\n2.576: .9950 .0050 .9900\n3.00: .9987 .0013 .9974&#x27;,
+      &#x27;Critical z values|Conf: 1-a/2 -&gt; z\n80%: .9000 -&gt; 1.28\n85%: .9250 -&gt; 1.44\n90%: .9500 -&gt; 1.645\n95%: .9750 -&gt; 1.96\n98%: .9900 -&gt; 2.33\n99%: .9950 -&gt; 2.576&#x27;,
+      &#x27;z mistakes|Forgot 1 - for above.\nSubtracted z, not areas.\nsigma used for xbar.\npbar used in Ch 7 SE.\nLooked up % not LEFT.\nDid not round z to 2.\n.0040 = .40%, not 4%.\nPast +/-3.49: ~0 or ~1.&#x27;,
+      &#x27;z on the TI-84|Left area of z:\nnormalcdf(-1E99,z,0,1)\nFrom raw values:\nnormalcdf(lo,hi,mu,sd)\nz from a left area:\ninvNorm(area,0,1)\nE in 1E99: 2nd , (EE)\nRound z to 2 for table.&#x27;,
+    ]
+  # Formula sheet
+  elif i == 1:
+    return [
+      &#x27;Std dev: population|Then take the square root.\nSheet prints xbar and n;\nfor a population that is\nmu and N.|sigma^2;sum (xi - xbar)^2;N&#x27;,
+      &#x27;Std dev: sample|Then take the square root.\nShortcut on sheet:\n[sum x^2 - (sum x)^2/n]\ndivided by n - 1.|s^2;sum (xi - xbar)^2;n - 1&#x27;,
+      &#x27;Critical probability|Areas for CI cutoffs:\n!alpha/2 &amp; 1 - alpha/2\nalpha = 1 - confidence\n95%: .0250 and .9750&#x27;,
+      &#x27;z-score (raw data)|One individual value.|z;x - mu;sigma&#x27;,
+      &#x27;z to raw score / mean|z-score to a raw score:\n!x = mu + (z)(sigma)\nz-score to a pop mean:\n!mu = x - (z)(sigma)&#x27;,
+      &#x27;Expected value of xbar|!E(xbar) = mu xbar = mu\nCenter of the sampling\ndistribution of xbar.\nxbar is unbiased for mu.&#x27;,
+      &#x27;z-score (sample mean)|sigma xbar = sigma/sqrt(n)|z xbar;xbar - mu;sigma xbar&#x27;,
+      &#x27;SE of mean (sigma known)|Standard error of the mean.|sigma xbar;sigma;sqrt(n)&#x27;,
+      &#x27;CI for mu (sigma known)|CI estimate for mu:\n!mu = xbar +/-\n!(Z a/2)(sigma / sqrt(n))\nPopulation sigma given.&#x27;,
+      &#x27;SE of mean (sigma unkn.)|Uses the sample s.|S xbar;s;sqrt(n)&#x27;,
+      &#x27;CI for mu (sigma unkn.)|CI estimate for mu:\n!mu = xbar +/-\n!(t a/2)(s / sqrt(n))\ndf = n - 1. a/2 = alpha/2&#x27;,
+      &#x27;Sample size for mu|= ((z a/2)(sigma) / E)^2\nAlways round UP.|n;[ (z a/2)(sigma) ]^2;E^2&#x27;,
+      &#x27;Sample proportion|x = count of successes.|pbar;x;n&#x27;,
+      &#x27;pbar center, normality|Expected value of pbar:\n!E(pbar) = p\nNormality requirements:\n!np &gt;= 5, n(1 - p) &gt;= 5&#x27;,
+      &#x27;z-score (sample prop)|sigma pbar uses known p.|z pbar;pbar - p;sigma pbar&#x27;,
+      &#x27;SE of the proportion|= sqrt( p(1 - p) / n )\nUses population p.|sigma pbar;sqrt[ p(1 - p) ];sqrt(n)&#x27;,
+      &#x27;CI estimate for p|!p = pbar +/- (Z a/2) x\n!sqrt( pbar(1-pbar) / n )\np unknown: SE uses pbar.&#x27;,
+      &#x27;Sample size for p|p* = pilot, else .50\nAlways round UP.|n;(z a/2)^2 p*(1 - p*);E^2&#x27;,
+    ]
+  return []
+</pre></div></details>
+<details><summary>E2C.py <span class="sub-inline">Reference cards: Chapters 6, 7 and 8.</span></summary><div>
+  <button class="copy" type="button" data-t="c5">Copy E2C.py</button> <a href="calcfiles/E2C.py">Open raw file</a>
+  <pre class="code" id="c5"># E2C - reference cards for EXAM2 (keep with EXAM2.py).
+# Card: &quot;Title|line\nline|label;numerator;denominator&quot;
+# Lines starting with ! are answers; ending with : are subheads.
+
+def get(i):
+  # Ch 6 normal
+  if i == 0:
+    return [
+      &#x27;Normal facts|Bell-shaped, symmetric.\nMean = median = mode.\nTotal area = 1.\nEach side of mu = .50.\nStandard normal: 0 and 1.\nContinuous: P(X = a) = 0\nP(X &lt; a) = P(X &lt;= a)\nExact 95%: 1.96, not 2.&#x27;,
+      &#x27;Goldfish: mu 60, sd 20|More than 80 days:\nz = (80 - 60)/20 = 1.00\n1 - .8413\n!= .1587\nMore than 60 days:\nz = 0\n!= .50&#x27;,
+      &#x27;Goldfish: between, tail|25 to 45 days:\nz = -1.75 and -0.75\n.2266 - .0401\n!= .1865\nWithin 7 days:\nz = -2.65\n!= .0040 = .40%&#x27;,
+      &#x27;Goldfish cutoffs|Top 10%: z = 1.28\n!60 + 1.28(20) = 85.6\nBottom 20%: z = -0.84\n!60 - 0.84(20) = 43.2\nMiddle 95%: z = +/-1.96\n!20.80 to 99.20 days&#x27;,
+      &#x27;Unknown mean / x|86.65% below x = 449,\nsigma 36: z = 1.11\n!mu = 449 - 1.11(36)\n!= 409.04\n67.72% ABOVE x: .3228\nz = -0.46, mu 3.58, 1.04\n!x = 3.1016&#x27;,
+      &#x27;95% of values vs CI|Middle 95% of fish:\nmu +/- 1.96(sigma)\n95% CI for a mean:\nxbar +/- 1.96(SE)\nSame 1.96, different\nquestion.&#x27;,
+    ]
+  # Ch 7 sampling
+  elif i == 1:
+    return [
+      &#x27;Sampling dist of xbar|Center: E(xbar) = mu\nSpread: sigma / sqrt(n)\nShape: normal if pop is\nnormal; else n &gt;= 30\n(Central Limit Theorem).\nThe population itself\ndoes not become normal.&#x27;,
+      &#x27;Credit card: setup|mu 2864, sd 775, n 50\nSE = 775 / sqrt(50)\n!SE = 109.6016\nn &gt;= 30: approx normal.\nNever divide by 775 here.&#x27;,
+      &#x27;Credit card: answers|xbar &gt; 3000: z = 1.24\n!1 - .8925 = .1075\nWithin $100 of mu:\nz = +/-0.91\n!.8186 - .1814 = .6372\nn = 100: SE = 77.5\n!z +/-1.29: .8030&#x27;,
+      &#x27;Changing n|Bigger n: same center,\nsmaller SE.\n4 x n -&gt; SE / 2.\nPop sigma never changes.\nMore xbar close to mu.&#x27;,
+      &#x27;Sampling dist of pbar|Center: E(pbar) = p\nSE: sqrt( p(1-p) / n )\nShape: np &gt;= 5 and\nn(1-p) &gt;= 5.\nDecimals: 66% = .66\nCount cutoff: x/n first.&#x27;,
+      &#x27;Internet: p .66, n 300|np 198, n(1-p) 102: OK\nSE = sqrt(.66(.34)/300)\n!SE = .0273 (4 places)\nWithin .04: .62 to .70\nz = +/-1.47\n!.9292 - .0708 = .8584&#x27;,
+      &#x27;Sampling error|Natural gap between a\nstatistic and parameter,\nsample to sample.\nNot a mistake.\nFinite pop correction:\nnot on the formula sheet;\nhandouts leave it out.&#x27;,
+    ]
+  # Ch 8 intervals
+  elif i == 2:
+    return [
+      &#x27;CI structure|Estimate +/- E\nE = (critical)(SE)\nWidth = 2E\nMean CI estimates mu.\nProportion CI estimates p.\nalpha = 1 - confidence&#x27;,
+      &#x27;z or t?|sigma given -&gt; z\nonly s given -&gt; t\n!t even if n = 60\ndf = n - 1\nSmall n: needs normal pop.\nProbabilities (Ch 7): z.\nSample size: always z.&#x27;,
+      &#x27;Verizon: z CI|xbar 153, sd 46, n 85\n95%: z = 1.96\nSE = 46/sqrt(85) = 4.9894\nE = 9.7792\n!(143.22, 162.78)\nMonthly minutes per\nresidential user.&#x27;,
+      &#x27;Reading the t-table|Row: df = n - 1\nColumn: upper area a/2\n!.025, df 12 -&gt; 2.179\nLower .05, df 50:\n!-1.676 (do not halve)\n90%, n 26: df 25\n!+/-1.708&#x27;,
+      &#x27;Aerospace: t CI|n 18, xbar 13.56, s 7.8\n90%, df 17: t = 1.740\nSE = 7.8/sqrt(18)\n= 1.83848\nE = 3.19895\n!(10.36, 16.76) hours\nNormal pop: n &lt; 30 OK.&#x27;,
+      &#x27;More t practice|xbar 25, s 3.5, n 60, 95%\ndf 59, t = 2.001\n!(24.096, 25.904)\nxbar 3.419, s .974, n 32\n90%, df 31, t = 1.696\n!(3.127, 3.711)&#x27;,
+      &#x27;Proportion CI|pbar .39, n 87, 95%\nCounts 33.93, 53.07 OK\nSE = .0523, E = .1025\n!(.2875, .4925)\nSE uses pbar here.\n1-PropZInt needs whole x:\n33.93 -&gt; do it by hand.&#x27;,
+      &#x27;Min n: mean|90%, sigma 4, E 1\n(1.645 x 4 / 1)^2\n= 43.2964\n!Round UP: 44\nNo sigma: pilot study\nor range / 4.&#x27;,
+      &#x27;Min n: proportion|98%: z = 2.33, E = .03\nPilot p* = .40:\n!1447.71 -&gt; 1,448\nNo pilot, p* = .50:\n!1508.03 -&gt; 1,509\nKey prints 1,508: wrong.&#x27;,
+      &#x27;How pieces move|More confidence: wider.\nLarger n: narrower.\nHalve E: 4 x n.\nLarger sigma: bigger n.\nE = .03, not 3.\nn always rounds UP.&#x27;,
+      &#x27;Interpret a CI|We are 95% confident the\npopulation mean (name it)\nis between L and U.\n95% of intervals made\nthis way contain mu.\nNot where 95% of\nindividual values fall.&#x27;,
+    ]
+  return []
+</pre></div></details>
+<details><summary>E2X.py <span class="sub-inline">Reference cards: mix-ups, calculator tips, concepts.</span></summary><div>
+  <button class="copy" type="button" data-t="c6">Copy E2X.py</button> <a href="calcfiles/E2X.py">Open raw file</a>
+  <pre class="code" id="c6"># E2X - reference cards for EXAM2 (keep with EXAM2.py).
+# Card: &quot;Title|line\nline|label;numerator;denominator&quot;
+# Lines starting with ! are answers; ending with : are subheads.
+
+def get(i):
+  # Mix-ups
+  if i == 0:
+    return [
+      &quot;One x or an average?|One x: z = (x-mu)/sigma\nAverage: SE=sigma/sqrt(n)\n&#x27;randomly selected fish&#x27;\n-&gt; one value.\n&#x27;mean of a sample of 50&#x27;\n-&gt; xbar.&quot;,
+      &#x27;Middle 95%: which?|Individuals:\nmu +/- 1.96 sigma\nSample means (Ch 7):\nmu +/- 1.96 sigma/sqrt(n)\nCI (Ch 8):\nxbar +/- 1.96 sigma/sqrt(n)&#x27;,
+      &quot;p, pbar, or p*?|&#x27;66% of ALL adults&#x27; = p\n-&gt; Ch 7, SE uses p.\n&#x27;39% of a sample of 87&#x27;\n= pbar -&gt; Ch 8 CI.\nSample size: p* pilot,\nor .50 with no pilot.&quot;,
+      &#x27;Normality checks|Means: n &gt;= 30, or the\npopulation is normal.\nProportions: np &gt;= 5\nand n(1-p) &gt;= 5.\nCI: check with pbar.&#x27;,
+      &#x27;E means two things|E(xbar), E(pbar):\nexpected value = center.\nE alone: margin of error\n= half the CI width.\n3 percentage points:\n!E = .03, not 3&#x27;,
+      &#x27;x means three things|Ch 6: x = one raw value.\nProportion: x = a count,\npbar = x / n.\nxbar = a sample mean.\nCount cutoff: 210 of 300\n!-&gt; pbar = .70&#x27;,
+      &#x27;Crit prob vs value|Critical probabilities:\nareas a/2 and 1 - a/2\n!95%: .0250 and .9750\nCritical value: z or t\n!95%: +/-1.96\nalpha itself = .05&#x27;,
+      &quot;One tail or two?|CI: split alpha,\nupper area = alpha/2.\n&#x27;Lower-tail area .05&#x27;:\nuse .05, do not halve.\nLower tail: t negative.&quot;,
+      &#x27;sigma (/N) vs s (/n-1)|Population: divide by N.\nTI 1-Var Stats: sigma x\nSample: divide by n - 1.\nTI 1-Var Stats: Sx&#x27;,
+      &#x27;Working back from a CI|center = (L + U) / 2\nE = (U - L) / 2\nwidth = U - L = 2E&#x27;,
+      &quot;Trigger words 1|&#x27;randomly selected&#x27; -&gt;\nCh 6, one value.\n&#x27;percentile, top __%&#x27; -&gt;\ninverse normal.\n&#x27;sample mean, average&#x27; -&gt;\nCh 7, SE = sigma/sqrt(n).\n&#x27;sample proportion&#x27; -&gt;\nCh 7, SE from p.&quot;,
+      &quot;Trigger words 2|&#x27;estimate, confident&#x27; -&gt;\nCh 8 CI.\n&#x27;population SD&#x27; -&gt; z\n&#x27;s =&#x27; -&gt; t, df = n - 1\n&#x27;how many to sample&#x27; -&gt;\nmin n, round UP.\n&#x27;no pilot&#x27; -&gt; p* = .50&quot;,
+    ]
+  # Calculator / table
+  elif i == 1:
+    return [
+      &#x27;Table vs calculator|The key uses the z-table:\nz to 2 places, 4-place\nareas, 2.33 for 98%.\nCalculator keeps every\ndigit, so it can differ.\n!Enter the TABLE answer.&#x27;,
+      &#x27;Biggest differences|Table vs calculator:\nAcme pilot: 1448 / 1444\nAcme none: 1509 / 1504\nInternet: .8584 / .8564\nWithin $100: .6372/.6384\n98% CI low: 112.57/112.58\n25-45 days: .1865/.1866&#x27;,
+      &#x27;Match the table on TI|1 Round z to 2 places.\n2 normalcdf(-1E99,z,0,1)\n3 Round area to 4.\n4 Between: round each\narea, then subtract.\n5 98%: type 2.33 by hand.&#x27;,
+      &#x27;TI keys: normal|2nd VARS (DISTR):\n2 normalcdf(lo,hi,mu,sd)\n3 invNorm(LEFT,mu,sd)\n4 invT(1 - a/2, df)\nxbar: sd = sigma/sqrt(n)\n-1E99 / 1E99 = infinity\nUse (-) for negatives.&#x27;,
+      &#x27;TI keys: intervals|STAT &gt; TESTS:\n7 ZInterval (sigma)\n8 TInterval (Sx = s)\nA 1-PropZInt (whole x)\nInpt: Stats\nC-Level: 95 or .95\nMin n: type the formula.&#x27;,
+      &#x27;Calculator traps|invNorm wants LEFT area.\nTail setting: LEFT.\n1-PropZInt: x whole.\nZInterval: 2.3263 at 98%.\nClose sqrt( parentheses.\nPhone in bag in exam.&#x27;,
+      &quot;Rounding rules|&#x27;Round final answer only&#x27;:\nkeep digits to the end.\n&#x27;Round all calculations&#x27;:\nround at every step.\nMin n: always UP.\nMatch decimals asked.\nPractice SE: 4 places.&quot;,
+      &#x27;Answer key errors|Acme no pilot: 1,509\n(key 1,508: early round)\n67.72% above: use .3228\n(key typo .3328)\nGoldfish &gt; 60: z = 0\n(key shows .5)\nVerizon: monthly minutes&#x27;,
+    ]
+  # Concepts / exam
+  elif i == 2:
+    return [
+      &#x27;Vocabulary|Parameter: population\n(mu, sigma, p).\nStatistic: sample\n(xbar, s, pbar).\nSE: SD of a sampling\ndistribution.\nUnbiased: E(statistic)\n= parameter.&#x27;,
+      &#x27;Sampling methods 1|Simple random: equal\nchance for every item.\nStratified: random from\nEACH subgroup.\nSystematic: random start,\nevery kth, k = N / n.\nCluster: randomly pick\nSOME groups.&#x27;,
+      &quot;Sampling methods 2|Nonrandom:\nConvenience: easiest.\nJudgment: researcher\npicks &#x27;representative&#x27;.\nQuota: fill targets\nwithout randomness.\nStratified vs quota:\nrandom vs not.&quot;,
+      &#x27;Survey errors|Coverage: frame misses\ngroups.\nNonresponse: answerers\ndiffer from others.\nMeasurement: wording,\ninterviewer effects.\nSampling: natural\nsample-to-sample change.&#x27;,
+      &#x27;Exam 2 format|95 min, in class.\n50 Q, 59 pts + 3 bonus.\nQ1-12 multiple choice.\nQ13-50 fill in blank.\nShow work except 13.\nName on every page.\nLockDown Browser.&#x27;,
+      &#x27;Allowed / not|Allowed: calculator,\nz-table, t-table,\nformula sheet, no notes.\n!Ask before keeping this\n!program for the exam.\nLeaving exam page = 0.&#x27;,
+    ]
+  return []
+</pre></div></details>
+
+</section>
+</main></div>
+<script>
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var el = document.getElementById(b.getAttribute('data-t'));
+    var label = b.textContent;
+    function sel() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected: press Ctrl+C'; }
+    try { navigator.clipboard.writeText(el.textContent).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = label; }, 1500); }, sel); } catch (e) { sel(); }
+  });
+});
+</script>
