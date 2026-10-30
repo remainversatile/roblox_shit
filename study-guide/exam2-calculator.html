@@ -1,0 +1,887 @@
+<title>Exam 2 Calculator Sheet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Serif:wght@600;700&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global', displayAlign: 'left' },
+  options: { enableMenu: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" defer></script>
+<style>
+/* Layout: one reading column with a sticky section index on wide screens; formula sheet set like the printed handout */
+:root {
+  --bg: #f7f8fa;
+  --paper: #ffffff;
+  --ink: #17202b;
+  --muted: #5a6573;
+  --rule: #d9dee5;
+  --accent: #1d4f7a;
+  --accent-2: #2f7d6d;
+  --tint: #e8eff6;
+  --mark: #fff1a8;
+  --mark-ink: #3a3000;
+  --warn: #9a3b12;
+  --warn-tint: #fbece4;
+  --curve-fill: #bfe0d8;
+  --display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161c; --paper: #182029; --ink: #e6ebf1; --muted: #9aa6b4; --rule: #2c3743;
+    --accent: #8cc0ee; --accent-2: #7fd0bd; --tint: #1f2c3a; --mark: #4a4114; --mark-ink: #fff3b8;
+    --warn: #f0a17c; --warn-tint: #3a2419; --curve-fill: #2c5a50; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161c; --paper: #182029; --ink: #e6ebf1; --muted: #9aa6b4; --rule: #2c3743;
+  --accent: #8cc0ee; --accent-2: #7fd0bd; --tint: #1f2c3a; --mark: #4a4114; --mark-ink: #fff3b8;
+  --warn: #f0a17c; --warn-tint: #3a2419; --curve-fill: #2c5a50; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; padding-top: 32px; font-size: 13.5px; }
+nav.toc p { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav.toc a { color: var(--muted); text-decoration: none; display: block; padding: 3px 8px; border-left: 2px solid transparent; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); border-left-color: var(--accent); outline: none; }
+main { min-width: 0; padding-top: 32px; }
+header.top { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-2); margin: 0 0 6px; }
+h1 { font-family: var(--display); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; margin: 0 0 10px; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 26px; line-height: 1.2; margin: 0 0 6px; text-wrap: balance; color: var(--ink); }
+h3 { font-size: 17px; margin: 26px 0 8px; color: var(--accent); }
+.sub { color: var(--muted); margin: 0; }
+section { padding-block: 36px 8px; border-bottom: 1px solid var(--rule); }
+section > .src { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+p { margin: 0 0 12px; max-width: 72ch; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; max-width: 72ch; }
+li { margin-bottom: 4px; }
+strong { font-weight: 700; }
+.ans { background: var(--mark); color: var(--mark-ink); padding: 0 4px; border-radius: 2px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.num { font-family: var(--mono); font-size: .92em; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 20px 0 8px; }
+.fact { background: var(--paper); border: 1px solid var(--rule); padding: 12px 14px; }
+.fact b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+.callout { background: var(--warn-tint); border-left: 3px solid var(--warn); padding: 12px 16px; margin: 16px 0; max-width: 72ch; }
+.callout p:last-child { margin: 0; }
+.callout .lab { color: var(--warn); font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0 18px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--paper); }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { font-size: 12px; font-family: var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--tint); }
+td.n, th.n { font-variant-numeric: tabular-nums; }
+.math { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.steps { counter-reset: s; list-style: none; padding: 0; }
+.steps li { counter-increment: s; position: relative; padding-left: 30px; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 21px; height: 21px; border-radius: 50%; background: var(--tint); color: var(--accent); font: 600 12px/21px var(--mono); text-align: center; }
+
+/* Official formula sheet, reproduced */
+.sheet { background: var(--paper); border: 1px solid var(--rule); padding: 8px 24px 16px; margin: 18px 0; }
+.sheet-title { text-align: center; font-weight: 700; color: #c0281e; font-size: 18px; margin: 14px 0 6px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sheet-title { color: #ff8a80; } }
+:root[data-theme="dark"] .sheet-title { color: #ff8a80; }
+.sheet-page { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 10px; }
+.row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.row:last-child { border-bottom: 0; }
+.row .lbl { font-size: 15px; }
+.row .use { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.sheet-note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+/* Bell curves */
+.curves { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 16px 0; }
+.curves figure { margin: 0; background: var(--paper); border: 1px solid var(--rule); padding: 10px; text-align: center; }
+.curves figcaption { font-size: 13px; font-weight: 600; color: var(--accent); }
+.curves svg { width: 100%; height: auto; display: block; }
+
+details { background: var(--paper); border: 1px solid var(--rule); margin: 8px 0; }
+summary { cursor: pointer; padding: 10px 14px; font-weight: 600; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+details > div { padding: 0 14px 12px; }
+.chk { list-style: none; padding: 0; }
+.chk li { padding-left: 26px; position: relative; }
+.chk li::before { content: ""; position: absolute; left: 2px; top: 6px; width: 13px; height: 13px; border: 1.5px solid var(--accent); border-radius: 2px; }
+a { color: var(--accent); }
+
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  nav.toc { position: static; padding-top: 20px; }
+  nav.toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .sheet { padding: 6px 14px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+<style>
+/* additions for the calculator sheet */
+.keys { font-family: var(--mono); font-size: 13.5px; white-space: nowrap; }
+kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; background: var(--paper); color: var(--ink); white-space: nowrap; }
+.diff td.hl { background: var(--warn-tint); color: var(--warn); font-weight: 700; }
+.pairs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin: 16px 0; }
+.pair { background: var(--paper); border: 1px solid var(--rule); padding: 14px 16px; min-width: 0; }
+.pair h4 { margin: 0 0 8px; font-size: 16px; color: var(--ink); }
+.pair .vs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; margin-bottom: 8px; }
+.pair .vs > div { background: var(--tint); padding: 8px 10px; font-size: 14px; min-width: 0; line-height: 1.6; }
+.pair .vs mjx-container { display: inline-block; margin: 6px 0; }
+.pair .vs > div b { line-height: 1.4; }
+.pair .vs b { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .02em; color: var(--accent); margin-bottom: 2px; }
+.pair .tell { font-size: 14px; color: var(--muted); margin: 0; }
+.pair .tell strong { color: var(--ink); }
+pre.code { background: var(--paper); border: 1px solid var(--rule); padding: 14px; overflow: auto; max-height: 520px; font: 12.5px/1.5 var(--mono); margin: 0; }
+.copy { font: 600 13px var(--body); background: var(--accent); color: var(--paper); border: 0; padding: 7px 14px; cursor: pointer; margin: 0 0 10px; }
+.copy:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.menu-map { columns: 2 240px; font-family: var(--mono); font-size: 13.5px; padding-left: 0; list-style: none; }
+@media (max-width: 520px) { .pair .vs { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sections">
+  <p>Sections</p>
+  <ol>
+    <li><a href="#allowed">Allowed?</a></li>
+    <li><a href="#tablecalc">Table vs. calculator</a></li>
+    <li><a href="#mixups">Chapter mix-ups</a></li>
+    <li><a href="#words">Trigger words</a></li>
+    <li><a href="#keys">TI-84 keystrokes</a></li>
+    <li><a href="#traps">Calculator traps</a></li>
+    <li><a href="#script">EXAM2.py script</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="top">
+  <p class="eyebrow">MGSC 2301 · Exam 2 · Chapters 6–8 · TI-84</p>
+  <h1>Exam 2 Calculator Sheet</h1>
+  <p class="sub">The places where chapters blur together, where the calculator and the course z-table disagree, and the exact keystrokes for each problem type. A companion Python program, EXAM2.py, is at the bottom.</p>
+</header>
+
+<section id="allowed">
+  <div class="callout"><p><span class="lab">Check this first.</span> The Oct 28 announcement allows a calculator, z-table, t-table, and the formula sheet <strong>with no notes</strong>. The built-in calculator functions on this page are fine. EXAM2.py, though, prints formula hints, so it may count as notes. Ask Professor Spencer before keeping it on your calculator for the exam. If you don't get a clear yes, use it only to study and delete it before class.</p></div>
+</section>
+
+<section id="tablecalc">
+  <h2>Table answers vs. calculator answers</h2>
+  <p class="src">Compared against the Practice Test 2 key</p>
+  <p>The answer key uses the course method: <strong>round z to 2 decimals → read a 4-place area from the table</strong>, and use table critical values (1.645, 1.96, <strong>2.33</strong>, 2.576). The calculator keeps every digit, so sometimes it lands on a different number. Highlighted rows are the ones where it changes the answer.</p>
+  <div class="tbl"><table class="diff">
+    <thead><tr><th>Practice problem</th><th class="n">Key (table method)</th><th class="n">Calculator (exact)</th></tr></thead>
+    <tbody>
+      <tr><td>Goldfish, more than 80 days</td><td class="n">.1587</td><td class="n">.1587</td></tr>
+      <tr><td>Goldfish, 25 to 45 days</td><td class="n">.1865</td><td class="n hl">.1866</td></tr>
+      <tr><td>Goldfish, top 10% cutoff</td><td class="n">85.6</td><td class="n hl">85.63</td></tr>
+      <tr><td>Goldfish, bottom 20% cutoff</td><td class="n">43.2</td><td class="n hl">43.17</td></tr>
+      <tr><td>67.72% larger than x</td><td class="n">3.1016</td><td class="n hl">3.1017</td></tr>
+      <tr><td>Credit card, \(\bar{x}\) &gt; $3,000</td><td class="n">.1075</td><td class="n hl">.1073</td></tr>
+      <tr><td>Credit card, within $100 (n = 50)</td><td class="n">.6372</td><td class="n hl">.6384</td></tr>
+      <tr><td>Internet use, within .04</td><td class="n">.8584</td><td class="n hl">.8564</td></tr>
+      <tr><td>98% z CI, \(\bar{x}\) = 119</td><td class="n">(112.57, 125.43)</td><td class="n hl">(112.58, 125.42)</td></tr>
+      <tr><td>Acme n, pilot p* = .40</td><td class="n">1,448</td><td class="n hl">1,444</td></tr>
+      <tr><td>Acme n, no pilot</td><td class="n">1,509</td><td class="n hl">1,504</td></tr>
+      <tr><td>Verizon 95% z CI</td><td class="n">(143.22, 162.78)</td><td class="n">(143.22, 162.78)</td></tr>
+      <tr><td>Aerospace 90% t CI</td><td class="n">(10.36, 16.76)</td><td class="n">(10.36, 16.76)</td></tr>
+      <tr><td>Bread minimum n</td><td class="n">44</td><td class="n">44</td></tr>
+    </tbody>
+  </table></div>
+  <h3>How to get the table answer from the calculator</h3>
+  <ol class="steps">
+    <li>Compute z, then <strong>round it to 2 decimals</strong> yourself.</li>
+    <li>Type <span class="keys">normalcdf(-1E99, z, 0, 1)</span> and round the result to 4 decimals. That number is exactly what the z-table shows.</li>
+    <li>For an area <em>between</em> two values, round each left area to 4 decimals <em>before</em> subtracting. That is why the key says .1865, not .1866.</li>
+    <li>For 98% intervals and 98% sample sizes, type <strong>2.33</strong> into the formula by hand. ZInterval uses 2.3263 and can give a different answer.</li>
+    <li>When a proportion problem says “round SE to 4 decimals,” use the rounded SE (.0273) in the z-score.</li>
+  </ol>
+  <p>Canvas checks your typed number, and the professor builds answers with the table. When in doubt, do it the table way and use the exact calculator value only to catch arithmetic mistakes.</p>
+</section>
+
+<section id="mixups">
+  <h2>Where chapters get mixed up</h2>
+  <p class="src">The questions that look alike but need different formulas</p>
+  <div class="pairs">
+    <div class="pair"><h4>One person or an average?</h4>
+      <div class="vs"><div><b>Ch 6 · one value</b>\(z=\dfrac{x-\mu}{\sigma}\)</div><div><b>Ch 7 · sample mean</b>\(\sigma_{\bar{X}}=\dfrac{\sigma}{\sqrt{n}}\)<br>\(z_{\bar{x}}=\dfrac{\bar{x}-\mu}{\sigma_{\bar{x}}}\)</div></div>
+      <p class="tell"><strong>Ch 6 wording:</strong> “a randomly selected goldfish”. <strong>Ch 7 wording:</strong> “the <em>mean</em> of a sample of 50”, “average balance of the sample”. A problem can describe a sample of 50 and still ask about one person.</p></div>
+
+    <div class="pair"><h4>Middle 95%: which one?</h4>
+      <div class="vs"><div><b>Ch 6 · individuals</b>μ ± 1.96σ</div><div><b>Ch 8 · CI for μ</b>\(\bar{x}\pm(1.96)\left(\dfrac{\sigma}{\sqrt{n}}\right)\)</div></div>
+      <p class="tell">Both use 1.96. The middle 95% of <strong>goldfish lifetimes</strong> centers on μ and uses σ. A 95% <strong>confidence interval</strong> centers on \(\bar{x}\) and uses the SE. The middle 95% of <strong>sample means</strong> (Ch 7) is μ ± 1.96σ/√n, centered on μ.</p></div>
+
+    <div class="pair"><h4>p, p̄, or p*?</h4>
+      <div class="vs"><div><b>Ch 7 · p known</b>\(\sigma_{\bar{p}}=\sqrt{\dfrac{p(1-p)}{n}}\)</div><div><b>Ch 8 · p unknown</b>\(\sqrt{\dfrac{\bar{p}\left(1-\bar{p}\right)}{\mathrm{n}}}\)</div></div>
+      <p class="tell"><strong>“66% of all adults over 70 use the internet”</strong> is p, so it's a Ch 7 probability. <strong>“In a sample of 87, 39% used temps”</strong> is p̄, so it's a Ch 8 CI. <strong>Sample size</strong> uses p* from a pilot, or .50 when there's no pilot.</p></div>
+
+    <div class="pair"><h4>z or t for a mean?</h4>
+      <div class="vs"><div><b>σ given → z</b>Population SD, any n</div><div><b>Only s → t</b>df = n − 1, even when n = 60</div></div>
+      <p class="tell">Chapter 7 <strong>probability</strong> questions about \(\bar{x}\) always use z with σ. t only appears in Chapter 8 intervals. Sample size for a mean always uses z.</p></div>
+
+    <div class="pair"><h4>Which normality check?</h4>
+      <div class="vs"><div><b>Means</b>n ≥ 30, or the population is normal</div><div><b>Proportions</b>np ≥ 5 and n(1 − p) ≥ 5</div></div>
+      <p class="tell">For a CI, check the counts with p̄. A small n is fine for a mean only when the problem says the population is normal (aerospace managers, n = 18).</p></div>
+
+    <div class="pair"><h4>“E” means two things</h4>
+      <div class="vs"><div><b>E( x̄ ), E( p̄ )</b>Expected value = the center: μ or p</div><div><b>E alone</b>Margin of error = half the CI width</div></div>
+      <p class="tell">In the sample-size formulas, E is the margin. “Within 3 percentage points” means E = <strong>.03</strong>, not 3.</p></div>
+
+    <div class="pair"><h4>“x” means three things</h4>
+      <div class="vs"><div><b>Ch 6</b>x = one raw value (80 days)</div><div><b>Ch 7–8 proportions</b>x = a count of successes, \(\bar{p}=\dfrac{x}{n}\)</div></div>
+      <p class="tell">And \(\bar{x}\) (with a bar) is a sample mean. If a proportion problem gives a count like “at least 210 of 300,” convert it to p̄ = 210/300 = .70 first.</p></div>
+
+    <div class="pair"><h4>Critical probability vs. critical value</h4>
+      <div class="vs"><div><b>Critical probability</b>Areas: \(\frac{\alpha}{2}\) & \(1-\frac{\alpha}{2}\), e.g. .0250 & .9750</div><div><b>Critical value</b>The z or t number: ±1.96</div></div>
+      <p class="tell">Read which one the blank wants. α itself is 1 − confidence (.05 for 95%).</p></div>
+
+    <div class="pair"><h4>Two tails or one?</h4>
+      <div class="vs"><div><b>Confidence interval</b>Split α: upper-tail area α/2</div><div><b>“Lower-tail area .05”</b>Look up .05 directly, don't halve it</div></div>
+      <p class="tell">The t-table practice asks both kinds. A lower tail gives a <strong>negative</strong> t (−1.676).</p></div>
+
+    <div class="pair"><h4>σ (÷N) vs. s (÷n − 1)</h4>
+      <div class="vs"><div><b>Population</b>σ, divide by N. TI: σx</div><div><b>Sample</b>s, divide by n − 1. TI: Sx</div></div>
+      <p class="tell">1-Var Stats shows both. Pick the one that matches whether the data are the whole population or a sample.</p></div>
+
+    <div class="pair"><h4>Rounding direction</h4>
+      <div class="vs"><div><b>Minimum n</b>Always UP: 43.01 → 44</div><div><b>Everything else</b>Normal rounding, to the decimals asked</div></div>
+      <p class="tell">The professor separates <strong>“round final answer only”</strong> from <strong>“round all calculations”</strong>. Read which one each question says.</p></div>
+
+    <div class="pair"><h4>Working backwards from a CI</h4>
+      <div class="vs"><div><b>Center</b>\(\bar{x}\) or p̄ = (L + U)/2</div><div><b>Margin</b>E = (U − L)/2, width = 2E</div></div>
+      <p class="tell">More confidence makes the interval wider. A larger n makes it narrower. Halving E takes 4 times the n, and 4 times the n halves the SE.</p></div>
+  </div>
+</section>
+
+<section id="words">
+  <h2>Trigger words</h2>
+  <p class="src">Quick scan from question wording to method</p>
+  <div class="tbl"><table>
+    <thead><tr><th>If the question says…</th><th>Do this</th></tr></thead>
+    <tbody>
+      <tr><td>“a randomly selected…”, “one customer”</td><td>Ch 6, z with σ</td></tr>
+      <tr><td>“percentile”, “top/bottom __%”, “cutoff”, “longest-lived”</td><td>Ch 6 inverse: LEFT area → z → x = μ + (z)(σ)</td></tr>
+      <tr><td>“% of values are below/above x”, solve for the mean</td><td>μ = x − (z)(σ)</td></tr>
+      <tr><td>“sample mean”, “average of the sample”, “sampling distribution of x̄”</td><td>Ch 7, SE = σ/√n</td></tr>
+      <tr><td>“sample proportion”, population % given</td><td>Ch 7, SE from p</td></tr>
+      <tr><td>“describe the sampling distribution”</td><td>State center, SE, and shape (with the check)</td></tr>
+      <tr><td>“estimate”, “confidence interval”, “__% confident”</td><td>Ch 8 CI. Choose z or t</td></tr>
+      <tr><td>“population standard deviation is…”</td><td>z</td></tr>
+      <tr><td>“sample standard deviation”, “s =”</td><td>t, df = n − 1</td></tr>
+      <tr><td>“how many… should be sampled”, “within $1”, “within 3 points”</td><td>Minimum n. Round UP</td></tr>
+      <tr><td>“no previous estimate”, “no pilot study”</td><td>p* = .50</td></tr>
+      <tr><td>“as a percentage”</td><td>Multiply by 100: .0040 → .40%</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="keys">
+  <h2>TI-84 keystrokes</h2>
+  <p class="src">TI-84 Plus CE menu layout. Function names are the same on newer models even if the menu position moves</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Problem type</th><th>Keys</th><th>What to enter</th></tr></thead>
+    <tbody>
+      <tr><td>P for one value (Ch 6)</td><td><kbd>2nd</kbd> <kbd>VARS</kbd> → 2:normalcdf</td><td>lower, upper, μ, σ</td></tr>
+      <tr><td>P for a sample mean (Ch 7)</td><td>normalcdf</td><td>lower, upper, μ, <strong>σ/√n</strong></td></tr>
+      <tr><td>P for a sample proportion (Ch 7)</td><td>normalcdf</td><td>lower, upper, p, <strong>√(p(1−p)/n)</strong></td></tr>
+      <tr><td>Percentile → x (Ch 6)</td><td><kbd>2nd</kbd> <kbd>VARS</kbd> → 3:invNorm</td><td><strong>LEFT</strong> area, μ, σ</td></tr>
+      <tr><td>Critical z for a CI</td><td>invNorm</td><td>1 − α/2, 0, 1 (gives 1.9600 for 95%)</td></tr>
+      <tr><td>Critical t for a CI</td><td><kbd>2nd</kbd> <kbd>VARS</kbd> → 4:invT</td><td>1 − α/2, df (gives a positive t)</td></tr>
+      <tr><td>CI for μ, σ known</td><td><kbd>STAT</kbd> → TESTS → 7:ZInterval</td><td>Inpt: Stats, σ, x̄, n, C-Level</td></tr>
+      <tr><td>CI for μ, s only</td><td><kbd>STAT</kbd> → TESTS → 8:TInterval</td><td>Inpt: Stats, x̄, Sx = s, n, C-Level</td></tr>
+      <tr><td>CI for p</td><td><kbd>STAT</kbd> → TESTS → A:1-PropZInt</td><td>x (whole count), n, C-Level</td></tr>
+      <tr><td>σ or s from raw data</td><td><kbd>STAT</kbd> → 1:Edit (L1), then CALC → 1:1-Var Stats</td><td>Sx = sample s, σx = population σ</td></tr>
+      <tr><td>Minimum n</td><td>No built-in</td><td>Type the formula, then round UP</td></tr>
+    </tbody>
+  </table></div>
+  <p>To type “infinity,” use <span class="keys">1E99</span>, or <span class="keys">-1E99</span> for negative infinity. The E is <kbd>2nd</kbd> <kbd>,</kbd> (EE), not the letter E. Use the <kbd>(−)</kbd> key for negatives, not the minus key.</p>
+</section>
+
+<section id="traps">
+  <h2>Calculator traps</h2>
+  <ul>
+    <li><strong>invNorm wants the area to the LEFT.</strong> For “top 10%,” enter .90, not .10. On newer OS versions invNorm has a Tail setting, so make sure it's on LEFT.</li>
+    <li><strong>1-PropZInt needs a whole-number x.</strong> When you're given p̄ = .39 and n = 87, x = 33.93 causes an ERROR. Compute that CI by hand with the formula.</li>
+    <li><strong>ZInterval and 1-PropZInt use exact z</strong> (2.3263 for 98%, 1.6449 for 90%). The table uses 2.33 and 1.645. Usually that only matters at 98%.</li>
+    <li><strong>A sample-mean probability doesn't use σ in normalcdf.</strong> Enter σ/√n in the σ slot, or compute z first.</li>
+    <li><strong>Missing parentheses:</strong> type 775/√(50), not 775/√50 followed by more operations. The TI keeps the √( open until you close it.</li>
+    <li><strong>Percent inputs:</strong> enter proportions as decimals (.66). C-Level can be entered as 95 or .95.</li>
+    <li><strong>Phone in your bag.</strong> Once LockDown Browser starts, the phone can't be your backup calculator, so bring batteries or a charge.</li>
+  </ul>
+</section>
+
+<section id="script">
+  <h2>EXAM2.py: the Python program</h2>
+  <p class="src">Uses only the math module · tested against every Practice Test 2 answer</p>
+  <p>Every result shows two lines. <strong>TABLE</strong> is the course method and matches the answer key. <strong>EXACT</strong> is the calculator method. If they disagree, enter the TABLE number unless the question says otherwise.</p>
+  <ul class="menu-map">
+    <li>0 · Which formula? (asks 2 questions)</li>
+    <li>1 · Ch6 P for one x</li>
+    <li>2 · Ch6 percentile → x or μ</li>
+    <li>3 · Ch7 P for x̄ (prints SE, CLT check)</li>
+    <li>4 · Ch7 P for p̄ (prints np checks)</li>
+    <li>5 · Ch8 CI μ with σ (z)</li>
+    <li>6 · Ch8 CI μ with s (t, df, invT)</li>
+    <li>7 · Ch8 CI for p (from p̄ or x)</li>
+    <li>8 · Ch8 min n, mean</li>
+    <li>9 · Ch8 min n, proportion</li>
+    <li>10 · σ and s from raw data</li>
+  </ul>
+  <h3>Put it on the calculator</h3>
+  <ol class="steps">
+    <li>Install <strong>TI Connect CE</strong> on your computer and connect the calculator by USB.</li>
+    <li>Drag <strong>EXAM2.py</strong> onto the calculator in the Calculator Explorer. Program names are limited to 8 characters, and EXAM2 fits.</li>
+    <li>On the calculator, open the <strong>Python</strong> app, choose EXAM2, and press Run.</li>
+    <li>Answer the prompts. Press <kbd>enter</kbd> at <span class="keys">[enter]</span> to go back to the menu. Type <span class="keys">q</span> to quit.</li>
+  </ol>
+  <details><summary>Show the full EXAM2.py code</summary><div>
+    <button class="copy" id="copybtn" type="button">Copy code</button>
+    <pre class="code" id="code"># EXAM2 - MGSC 2301 Ch 6-8 helper
+# Plain Python for the TI-84 Python app.
+# Every answer shows TABLE (course z-table
+# method) and EXACT (calculator method).
+import math
+
+TBLZ = {80: 1.28, 90: 1.645, 95: 1.96,
+        98: 2.33, 99: 2.576}
+
+
+def num(prompt):
+  while True:
+    s = input(prompt)
+    try:
+      return float(s)
+    except:
+      print(&quot;Type a number&quot;)
+
+
+def pause():
+  input(&quot;[enter]&quot;)
+
+
+def f4(x):
+  return &quot;%.4f&quot; % x
+
+
+def f2(x):
+  return &quot;%.2f&quot; % x
+
+
+try:
+  _erf = math.erf
+except:
+  def _erf(x):
+    # Abramowitz-Stegun 7.1.26
+    sg = 1
+    if x &lt; 0:
+      sg = -1
+      x = -x
+    t = 1 / (1 + 0.3275911 * x)
+    y = 1 - (((((1.061405429 * t
+        - 1.453152027) * t) + 1.421413741)
+        * t - 0.284496736) * t
+        + 0.254829592) * t * math.exp(-x * x)
+    return sg * y
+
+
+def phi(z):
+  # left area under standard normal
+  return 0.5 * (1 + _erf(z / math.sqrt(2)))
+
+
+def invphi(a):
+  lo = -9.0
+  hi = 9.0
+  for i in range(80):
+    m = (lo + hi) / 2
+    if phi(m) &lt; a:
+      lo = m
+    else:
+      hi = m
+  return (lo + hi) / 2
+
+
+def r2(z):
+  # z rounded the way the table reads it
+  return math.floor(z * 100 + 0.5) / 100
+
+
+try:
+  _lg = math.lgamma
+except:
+  def _lg(x):
+    # Lanczos log-gamma
+    c = [76.18009172947146, -86.50532032941677,
+         24.01409824083091, -1.231739572450155,
+         0.1208650973866179e-2,
+         -0.5395239384953e-5]
+    y = x
+    tmp = x + 5.5
+    tmp -= (x + 0.5) * math.log(tmp)
+    s = 1.000000000190015
+    for k in c:
+      y += 1
+      s += k / y
+    return -tmp + math.log(2.5066282746310005 * s / x)
+
+
+def _betacf(a, b, x):
+  qab = a + b
+  qap = a + 1
+  qam = a - 1
+  c = 1.0
+  d = 1 - qab * x / qap
+  if abs(d) &lt; 1e-30:
+    d = 1e-30
+  d = 1 / d
+  h = d
+  for m in range(1, 200):
+    m2 = 2 * m
+    aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+    d = 1 + aa * d
+    if abs(d) &lt; 1e-30:
+      d = 1e-30
+    c = 1 + aa / c
+    if abs(c) &lt; 1e-30:
+      c = 1e-30
+    d = 1 / d
+    h *= d * c
+    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+    d = 1 + aa * d
+    if abs(d) &lt; 1e-30:
+      d = 1e-30
+    c = 1 + aa / c
+    if abs(c) &lt; 1e-30:
+      c = 1e-30
+    d = 1 / d
+    de = d * c
+    h *= de
+    if abs(de - 1) &lt; 1e-10:
+      break
+  return h
+
+
+def _ibeta(a, b, x):
+  if x &lt;= 0:
+    return 0.0
+  if x &gt;= 1:
+    return 1.0
+  bt = math.exp(_lg(a + b) - _lg(a) - _lg(b)
+                + a * math.log(x) + b * math.log(1 - x))
+  if x &lt; (a + 1) / (a + b + 2):
+    return bt * _betacf(a, b, x) / a
+  return 1 - bt * _betacf(b, a, 1 - x) / b
+
+
+def tupper(t, df):
+  # area to the RIGHT of t (t &gt;= 0)
+  x = df / (df + t * t)
+  return 0.5 * _ibeta(df / 2, 0.5, x)
+
+
+def invt(upper, df):
+  # t with this upper-tail area
+  lo = 0.0
+  hi = 60.0
+  for i in range(70):
+    m = (lo + hi) / 2
+    if tupper(m, df) &gt; upper:
+      lo = m
+    else:
+      hi = m
+  return (lo + hi) / 2
+
+
+def zcrit(conf):
+  # conf as a percent, e.g. 95
+  ex = invphi(1 - (1 - conf / 100) / 2)
+  k = int(conf + 0.5)
+  if k in TBLZ and abs(conf - k) &lt; 1e-9:
+    tb = TBLZ[k]
+  else:
+    tb = r2(ex)
+  return tb, ex
+
+
+def getconf():
+  c = num(&quot;Confidence % (eg 95): &quot;)
+  if c &lt; 1:
+    c = c * 100
+  a = 1 - c / 100
+  print(&quot;alpha =&quot;, f4(a))
+  print(&quot;a/2 =&quot;, f4(a / 2), &quot; 1-a/2 =&quot;, f4(1 - a / 2))
+  return c
+
+
+def r4(a):
+  return math.floor(a * 10000 + 0.5) / 10000
+
+
+def areas(lo_z, hi_z, kind, tbl):
+  # kind: 1 below, 2 above, 3 between
+  # tbl: read 4-place areas like the table
+  pl = phi(lo_z)
+  ph = phi(hi_z)
+  if tbl:
+    pl = r4(pl)
+    ph = r4(ph)
+  if kind == 1:
+    return ph
+  if kind == 2:
+    return 1 - pl
+  return ph - pl
+
+
+def askkind():
+  print(&quot;1:P(below a)  2:P(above a)&quot;)
+  print(&quot;3:P(between a,b)&quot;)
+  return int(num(&quot;Pick: &quot;))
+
+
+def prob_core(center, se, label, se_t=0):
+  if se_t == 0:
+    se_t = se
+  k = askkind()
+  if k == 3:
+    a = num(&quot;a (lower) = &quot;)
+    b = num(&quot;b (upper) = &quot;)
+  else:
+    a = num(&quot;a = &quot;)
+    b = a
+  za = (a - center) / se
+  zb = (b - center) / se
+  ta = r2((a - center) / se_t)
+  tb = r2((b - center) / se_t)
+  print(&quot;-- z =&quot;, label)
+  if k == 3:
+    print(&quot;z(a) =&quot;, f4(za), &quot; z(b) =&quot;, f4(zb))
+  else:
+    print(&quot;z =&quot;, f4(za))
+  pt = areas(ta, tb, k, True)
+  pe = areas(za, zb, k, False)
+  if k == 3:
+    print(&quot;table: z&quot;, f2(ta), &quot;and&quot;, f2(tb))
+    print(&quot;  L areas&quot;, f4(phi(ta)), f4(phi(tb)))
+  else:
+    print(&quot;table: z&quot;, f2(ta), &quot;L area&quot;, f4(phi(ta)))
+  print(&quot;TABLE P =&quot;, f4(pt))
+  print(&quot;EXACT P =&quot;, f4(pe))
+  if k == 2:
+    print(&quot;(above = 1 - left area)&quot;)
+  if k == 3:
+    print(&quot;(subtract AREAS, not z)&quot;)
+  pause()
+
+
+def m_individual():
+  print(&quot;ONE value x: z=(x-mu)/sigma&quot;)
+  mu = num(&quot;mu = &quot;)
+  sg = num(&quot;sigma = &quot;)
+  prob_core(mu, sg, &quot;(x-mu)/sigma&quot;)
+
+
+def m_inverse():
+  print(&quot;PERCENTILE -&gt; value&quot;)
+  print(&quot;Enter the LEFT area.&quot;)
+  print(&quot;top 10% -&gt; .90&quot;)
+  print(&quot;bottom 20% -&gt; .20&quot;)
+  print(&quot;67.72% ABOVE x -&gt; .3228&quot;)
+  a = num(&quot;left area = &quot;)
+  if a &gt; 1:
+    a = a / 100
+  print(&quot;1: find x   2: find mu&quot;)
+  k = int(num(&quot;Pick: &quot;))
+  ze = invphi(a)
+  zt = r2(ze)
+  print(&quot;z table ~&quot;, f2(zt), &quot; exact&quot;, f4(ze))
+  print(&quot;(check table: the area closest&quot;)
+  print(&quot; to&quot;, f4(a), &quot;is the z to use)&quot;)
+  if k == 1:
+    mu = num(&quot;mu = &quot;)
+    sg = num(&quot;sigma = &quot;)
+    print(&quot;x = mu + (z)(sigma)&quot;)
+    print(&quot;TABLE x =&quot;, f4(mu + zt * sg))
+    print(&quot;EXACT x =&quot;, f4(mu + ze * sg))
+  else:
+    x = num(&quot;x = &quot;)
+    sg = num(&quot;sigma = &quot;)
+    print(&quot;mu = x - (z)(sigma)&quot;)
+    print(&quot;TABLE mu =&quot;, f4(x - zt * sg))
+    print(&quot;EXACT mu =&quot;, f4(x - ze * sg))
+  pause()
+
+
+def m_xbar():
+  print(&quot;SAMPLE MEAN xbar (Ch 7)&quot;)
+  print(&quot;uses sigma/sqrt(n), NOT sigma&quot;)
+  mu = num(&quot;mu = &quot;)
+  sg = num(&quot;sigma (population) = &quot;)
+  n = num(&quot;n = &quot;)
+  se = sg / math.sqrt(n)
+  print(&quot;E(xbar) = mu =&quot;, mu)
+  print(&quot;SE = sigma/sqrt(n) =&quot;, f4(se))
+  if n &gt;= 30:
+    print(&quot;n&gt;=30: approx normal (CLT)&quot;)
+  else:
+    print(&quot;n&lt;30: normal ONLY if pop normal&quot;)
+  prob_core(mu, se, &quot;(xbar-mu)/SE&quot;)
+
+
+def m_pbar():
+  print(&quot;SAMPLE PROPORTION pbar (Ch 7)&quot;)
+  print(&quot;SE uses KNOWN p, not pbar&quot;)
+  p = num(&quot;population p = &quot;)
+  if p &gt; 1:
+    p = p / 100
+  n = num(&quot;n = &quot;)
+  print(&quot;np =&quot;, f2(n * p), &quot; n(1-p) =&quot;, f2(n * (1 - p)))
+  if n * p &gt;= 5 and n * (1 - p) &gt;= 5:
+    print(&quot;both &gt;= 5: approx normal&quot;)
+  else:
+    print(&quot;NOT both &gt;= 5: not normal!&quot;)
+  se = math.sqrt(p * (1 - p) / n)
+  print(&quot;E(pbar) = p =&quot;, p)
+  print(&quot;SE =&quot;, f4(se), &quot;(&quot; + &quot;%.6f&quot; % se + &quot;)&quot;)
+  print(&quot;TABLE uses SE&quot;, f4(se) + &quot;;&quot;)
+  print(&quot;EXACT keeps all digits.&quot;)
+  print(&quot;Count x given? cutoff = x/n&quot;)
+  prob_core(p, se, &quot;(pbar-p)/SE&quot;, r4(se))
+
+
+def ci_print(pt, e_t, e_e, dp):
+  fm = &quot;%.&quot; + str(int(dp)) + &quot;f&quot;
+  print(&quot;TABLE: (&quot; + fm % (pt - e_t) + &quot;, &quot; + fm % (pt + e_t) + &quot;)&quot;)
+  print(&quot;EXACT: (&quot; + fm % (pt - e_e) + &quot;, &quot; + fm % (pt + e_e) + &quot;)&quot;)
+  print(&quot;width = 2E. E = half width.&quot;)
+
+
+def m_ci_z():
+  print(&quot;CI for mu, SIGMA KNOWN -&gt; z&quot;)
+  xb = num(&quot;xbar = &quot;)
+  sg = num(&quot;sigma = &quot;)
+  n = num(&quot;n = &quot;)
+  c = getconf()
+  tb, ex = zcrit(c)
+  se = sg / math.sqrt(n)
+  print(&quot;SE = sigma/sqrt(n) =&quot;, f4(se))
+  print(&quot;z table&quot;, tb, &quot; exact&quot;, f4(ex))
+  print(&quot;E table =&quot;, f4(tb * se), &quot; exact&quot;, f4(ex * se))
+  dp = num(&quot;decimals wanted: &quot;)
+  ci_print(xb, tb * se, ex * se, dp)
+  pause()
+
+
+def m_ci_t():
+  print(&quot;CI for mu, only s -&gt; t&quot;)
+  print(&quot;(t even if n &gt;= 30)&quot;)
+  xb = num(&quot;xbar = &quot;)
+  s = num(&quot;s = &quot;)
+  n = num(&quot;n = &quot;)
+  c = getconf()
+  df = int(n - 1 + 0.5)
+  up = (1 - c / 100) / 2
+  te = invt(up, df)
+  print(&quot;df = n-1 =&quot;, df)
+  print(&quot;t-table: row df&quot;, df, &quot;col&quot;, f4(up))
+  print(&quot;t exact =&quot;, &quot;%.3f&quot; % te)
+  tt = num(&quot;t from YOUR table (0=exact): &quot;)
+  if tt == 0:
+    tt = te
+  se = s / math.sqrt(n)
+  print(&quot;SE = s/sqrt(n) =&quot;, f4(se))
+  print(&quot;E table =&quot;, f4(tt * se), &quot; exact&quot;, f4(te * se))
+  dp = num(&quot;decimals wanted: &quot;)
+  ci_print(xb, tt * se, te * se, dp)
+  pause()
+
+
+def m_ci_p():
+  print(&quot;CI for p: uses pbar in SE&quot;)
+  print(&quot;1: I have pbar  2: I have x&quot;)
+  k = int(num(&quot;Pick: &quot;))
+  if k == 2:
+    x = num(&quot;x (count) = &quot;)
+    n = num(&quot;n = &quot;)
+    pb = x / n
+  else:
+    pb = num(&quot;pbar = &quot;)
+    if pb &gt; 1:
+      pb = pb / 100
+    n = num(&quot;n = &quot;)
+  print(&quot;pbar =&quot;, f4(pb))
+  print(&quot;n*pbar =&quot;, f2(n * pb), &quot; n(1-pbar) =&quot;, f2(n * (1 - pb)))
+  c = getconf()
+  tb, ex = zcrit(c)
+  se = math.sqrt(pb * (1 - pb) / n)
+  print(&quot;SE =&quot;, f4(se))
+  print(&quot;z table&quot;, tb, &quot; exact&quot;, f4(ex))
+  print(&quot;E table =&quot;, f4(tb * se), &quot; exact&quot;, f4(ex * se))
+  dp = num(&quot;decimals wanted: &quot;)
+  ci_print(pb, tb * se, ex * se, dp)
+  pause()
+
+
+def ceil_n(v):
+  c = math.ceil(v - 1e-9)
+  return int(c)
+
+
+def m_n_mean():
+  print(&quot;MIN n for a MEAN&quot;)
+  print(&quot;n = ((z)(sigma)/E)^2, round UP&quot;)
+  sg = num(&quot;sigma (or range/4) = &quot;)
+  e = num(&quot;E (margin) = &quot;)
+  c = getconf()
+  tb, ex = zcrit(c)
+  vt = (tb * sg / e) ** 2
+  ve = (ex * sg / e) ** 2
+  print(&quot;z table&quot;, tb, &quot; exact&quot;, f4(ex))
+  print(&quot;TABLE n =&quot;, f4(vt), &quot;-&gt; UP&quot;, ceil_n(vt))
+  print(&quot;EXACT n =&quot;, f4(ve), &quot;-&gt; UP&quot;, ceil_n(ve))
+  pause()
+
+
+def m_n_prop():
+  print(&quot;MIN n for a PROPORTION&quot;)
+  print(&quot;no pilot -&gt; p* = .50&quot;)
+  e = num(&quot;E (decimal, 3 pts=.03) = &quot;)
+  if e &gt;= 1:
+    e = e / 100
+    print(&quot;converted E to&quot;, e)
+  ps = num(&quot;p* (0 = none) = &quot;)
+  if ps == 0:
+    ps = 0.5
+  if ps &gt; 1:
+    ps = ps / 100
+  c = getconf()
+  tb, ex = zcrit(c)
+  vt = tb * tb * ps * (1 - ps) / (e * e)
+  ve = ex * ex * ps * (1 - ps) / (e * e)
+  print(&quot;z table&quot;, tb, &quot; exact&quot;, f4(ex))
+  print(&quot;TABLE n =&quot;, f4(vt), &quot;-&gt; UP&quot;, ceil_n(vt))
+  print(&quot;EXACT n =&quot;, f4(ve), &quot;-&gt; UP&quot;, ceil_n(ve))
+  pause()
+
+
+def m_sd():
+  print(&quot;STD DEV from raw data&quot;)
+  print(&quot;enter values; blank to finish&quot;)
+  xs = []
+  while True:
+    s = input(&quot;x&quot; + str(len(xs) + 1) + &quot; = &quot;)
+    if s == &quot;&quot;:
+      break
+    try:
+      xs.append(float(s))
+    except:
+      print(&quot;Type a number&quot;)
+  n = len(xs)
+  if n &lt; 2:
+    print(&quot;need 2+ values&quot;)
+    pause()
+    return
+  m = sum(xs) / n
+  ss = 0.0
+  for x in xs:
+    ss += (x - m) ** 2
+  print(&quot;n =&quot;, n, &quot; mean =&quot;, f4(m))
+  print(&quot;sum (x-mean)^2 =&quot;, f4(ss))
+  print(&quot;POP sigma (/N) =&quot;, f4(math.sqrt(ss / n)))
+  print(&quot;SAMPLE s (/n-1) =&quot;, f4(math.sqrt(ss / (n - 1))))
+  pause()
+
+
+def m_which():
+  print(&quot;WHICH FORMULA?&quot;)
+  print(&quot;About: 1 one value x&quot;)
+  print(&quot;2 an average  3 a proportion&quot;)
+  a = int(num(&quot;Pick: &quot;))
+  if a == 1:
+    print(&quot;Ch 6. z=(x-mu)/sigma&quot;)
+    print(&quot;Cutoff/percentile? Use menu 2&quot;)
+    print(&quot;x = mu + (z)(sigma)&quot;)
+  elif a == 2:
+    print(&quot;Want: 1 probability&quot;)
+    print(&quot;2 interval  3 sample size&quot;)
+    b = int(num(&quot;Pick: &quot;))
+    if b == 1:
+      print(&quot;Ch 7. SE = sigma/sqrt(n)&quot;)
+      print(&quot;z = (xbar-mu)/SE. Never t.&quot;)
+    elif b == 2:
+      print(&quot;sigma given? -&gt; z (menu 5)&quot;)
+      print(&quot;only s?      -&gt; t (menu 6)&quot;)
+      print(&quot;df = n - 1&quot;)
+    else:
+      print(&quot;n = ((z)(sigma)/E)^2, UP&quot;)
+  else:
+    print(&quot;Want: 1 probability&quot;)
+    print(&quot;2 interval  3 sample size&quot;)
+    b = int(num(&quot;Pick: &quot;))
+    if b == 1:
+      print(&quot;Ch 7. p is KNOWN.&quot;)
+      print(&quot;SE = sqrt(p(1-p)/n)&quot;)
+    elif b == 2:
+      print(&quot;Ch 8. p unknown.&quot;)
+      print(&quot;SE = sqrt(pbar(1-pbar)/n)&quot;)
+    else:
+      print(&quot;n=z^2 p*(1-p*)/E^2, UP&quot;)
+      print(&quot;no pilot: p* = .50&quot;)
+  pause()
+
+
+MENU = [
+  (&quot;Which formula?&quot;, m_which),
+  (&quot;Ch6 P for one x&quot;, m_individual),
+  (&quot;Ch6 percentile-&gt;x/mu&quot;, m_inverse),
+  (&quot;Ch7 P for xbar&quot;, m_xbar),
+  (&quot;Ch7 P for pbar&quot;, m_pbar),
+  (&quot;Ch8 CI mu sigma(z)&quot;, m_ci_z),
+  (&quot;Ch8 CI mu s(t)&quot;, m_ci_t),
+  (&quot;Ch8 CI p&quot;, m_ci_p),
+  (&quot;Ch8 min n mean&quot;, m_n_mean),
+  (&quot;Ch8 min n prop&quot;, m_n_prop),
+  (&quot;Std dev from data&quot;, m_sd),
+]
+
+
+def main():
+  while True:
+    print(&quot;== EXAM 2 Ch 6-8 ==&quot;)
+    for i in range(len(MENU)):
+      print(str(i) + &quot;:&quot; + MENU[i][0])
+    print(&quot;q: quit&quot;)
+    s = input(&quot;Pick #: &quot;)
+    if s == &quot;q&quot; or s == &quot;Q&quot;:
+      break
+    try:
+      k = int(s)
+    except:
+      continue
+    if 0 &lt;= k &lt; len(MENU):
+      try:
+        MENU[k][1]()
+      except Exception as e:
+        print(&quot;Error:&quot;, e)
+        pause()
+
+
+main()
+</pre>
+  </div></details>
+</section>
+</main>
+</div>
+
+<script>
+document.getElementById('copybtn').addEventListener('click', function () {
+  var b = this, txt = document.getElementById('code').textContent;
+  function sel() { var r = document.createRange(); r.selectNodeContents(document.getElementById('code')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Selected, press Ctrl+C'; }
+  try {
+    navigator.clipboard.writeText(txt).then(function () { b.textContent = 'Copied'; }, sel);
+  } catch (e) { sel(); }
+});
+</script>
