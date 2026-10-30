@@ -1,0 +1,655 @@
+<title>MGSC 2301 Exam 2 Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Serif:wght@600;700&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global', displayAlign: 'left' },
+  options: { enableMenu: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" defer></script>
+<style>
+/* Layout: one reading column with a sticky section index on wide screens; formula sheet set like the printed handout */
+:root {
+  --bg: #f7f8fa;
+  --paper: #ffffff;
+  --ink: #17202b;
+  --muted: #5a6573;
+  --rule: #d9dee5;
+  --accent: #1d4f7a;
+  --accent-2: #2f7d6d;
+  --tint: #e8eff6;
+  --mark: #fff1a8;
+  --mark-ink: #3a3000;
+  --warn: #9a3b12;
+  --warn-tint: #fbece4;
+  --curve-fill: #bfe0d8;
+  --display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161c; --paper: #182029; --ink: #e6ebf1; --muted: #9aa6b4; --rule: #2c3743;
+    --accent: #8cc0ee; --accent-2: #7fd0bd; --tint: #1f2c3a; --mark: #4a4114; --mark-ink: #fff3b8;
+    --warn: #f0a17c; --warn-tint: #3a2419; --curve-fill: #2c5a50; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161c; --paper: #182029; --ink: #e6ebf1; --muted: #9aa6b4; --rule: #2c3743;
+  --accent: #8cc0ee; --accent-2: #7fd0bd; --tint: #1f2c3a; --mark: #4a4114; --mark-ink: #fff3b8;
+  --warn: #f0a17c; --warn-tint: #3a2419; --curve-fill: #2c5a50; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; padding-top: 32px; font-size: 13.5px; }
+nav.toc p { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav.toc a { color: var(--muted); text-decoration: none; display: block; padding: 3px 8px; border-left: 2px solid transparent; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); border-left-color: var(--accent); outline: none; }
+main { min-width: 0; padding-top: 32px; }
+header.top { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-2); margin: 0 0 6px; }
+h1 { font-family: var(--display); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; margin: 0 0 10px; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 26px; line-height: 1.2; margin: 0 0 6px; text-wrap: balance; color: var(--ink); }
+h3 { font-size: 17px; margin: 26px 0 8px; color: var(--accent); }
+.sub { color: var(--muted); margin: 0; }
+section { padding-block: 36px 8px; border-bottom: 1px solid var(--rule); }
+section > .src { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+p { margin: 0 0 12px; max-width: 72ch; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; max-width: 72ch; }
+li { margin-bottom: 4px; }
+strong { font-weight: 700; }
+.ans { background: var(--mark); color: var(--mark-ink); padding: 0 4px; border-radius: 2px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.num { font-family: var(--mono); font-size: .92em; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 20px 0 8px; }
+.fact { background: var(--paper); border: 1px solid var(--rule); padding: 12px 14px; }
+.fact b { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+.callout { background: var(--warn-tint); border-left: 3px solid var(--warn); padding: 12px 16px; margin: 16px 0; max-width: 72ch; }
+.callout p:last-child { margin: 0; }
+.callout .lab { color: var(--warn); font-weight: 700; }
+.tbl { overflow-x: auto; margin: 12px 0 18px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--paper); }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { font-size: 12px; font-family: var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--tint); }
+td.n, th.n { font-variant-numeric: tabular-nums; }
+.math { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.steps { counter-reset: s; list-style: none; padding: 0; }
+.steps li { counter-increment: s; position: relative; padding-left: 30px; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 21px; height: 21px; border-radius: 50%; background: var(--tint); color: var(--accent); font: 600 12px/21px var(--mono); text-align: center; }
+
+/* Official formula sheet, reproduced */
+.sheet { background: var(--paper); border: 1px solid var(--rule); padding: 8px 24px 16px; margin: 18px 0; }
+.sheet-title { text-align: center; font-weight: 700; color: #c0281e; font-size: 18px; margin: 14px 0 6px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sheet-title { color: #ff8a80; } }
+:root[data-theme="dark"] .sheet-title { color: #ff8a80; }
+.sheet-page { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 10px; }
+.row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.row:last-child { border-bottom: 0; }
+.row .lbl { font-size: 15px; }
+.row .use { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.sheet-note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+/* Bell curves */
+.curves { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 16px 0; }
+.curves figure { margin: 0; background: var(--paper); border: 1px solid var(--rule); padding: 10px; text-align: center; }
+.curves figcaption { font-size: 13px; font-weight: 600; color: var(--accent); }
+.curves svg { width: 100%; height: auto; display: block; }
+
+details { background: var(--paper); border: 1px solid var(--rule); margin: 8px 0; }
+summary { cursor: pointer; padding: 10px 14px; font-weight: 600; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+details > div { padding: 0 14px 12px; }
+.chk { list-style: none; padding: 0; }
+.chk li { padding-left: 26px; position: relative; }
+.chk li::before { content: ""; position: absolute; left: 2px; top: 6px; width: 13px; height: 13px; border: 1.5px solid var(--accent); border-radius: 2px; }
+a { color: var(--accent); }
+
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  nav.toc { position: static; padding-top: 20px; }
+  nav.toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .sheet { padding: 6px 14px 12px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sections">
+  <p>Sections</p>
+  <ol>
+    <li><a href="#exam">Exam format</a></li>
+    <li><a href="#sheet">Formula sheet</a></li>
+    <li><a href="#choose">Pick the formula</a></li>
+    <li><a href="#normal">Ch 6 · Normal areas</a></li>
+    <li><a href="#percentiles">Ch 6 · Percentiles</a></li>
+    <li><a href="#xbar">Ch 7 · Sample mean</a></li>
+    <li><a href="#pbar">Ch 7 · Sample proportion</a></li>
+    <li><a href="#ci">Ch 8 · CIs &amp; z</a></li>
+    <li><a href="#t">Ch 8 · t intervals</a></li>
+    <li><a href="#prop">Ch 8 · Proportion CI &amp; n</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#practice">Practice Test 2</a></li>
+    <li><a href="#final">Final checks</a></li>
+    <li><a href="#sources">Canvas sources</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="top">
+  <p class="eyebrow">MGSC 2301 · Professor Denise Spencer · Friday, October 30, 2026</p>
+  <h1>Business Statistics Exam 2</h1>
+  <p class="sub">Chapters 6–8: the normal distribution, sampling distributions, and confidence intervals. Every formula is written exactly as it appears on the Canvas <em>Exam 2: Chapters 6-8 Formulas</em> sheet.</p>
+</header>
+
+<!-- EXAM FORMAT -->
+<section id="exam">
+  <h2>Exam format and rules</h2>
+  <p class="src">Source: Professor Spencer's “Exam 2 Preparation” announcement, Oct 28, 2026 · Daily Schedule · Formula Sheet for Test 2</p>
+  <div class="facts">
+    <div class="fact"><b>Coverage</b>Chapters 6, 7, 8</div>
+    <div class="fact"><b>Time</b>95 minutes, in class. Closes automatically 5 min before class ends</div>
+    <div class="fact"><b>Questions</b>50 questions, 59 pts, plus 3 extra credit at 1 pt each</div>
+    <div class="fact"><b>Question types</b>Q1–12 multiple choice. Q13–50 fill-in-the-blank</div>
+    <div class="fact"><b>Allowed</b>z-table, t-table, formula sheet (no notes), calculator, blank paper</div>
+    <div class="fact"><b>Software</b>Respondus LockDown Browser. Run the tech check first</div>
+  </div>
+  <ul>
+    <li><strong>Show handwritten work</strong> on every fill-in question except the 13 that are marked exempt. Number each problem, put your name on every page, and hand in your work before you leave. Questions that require work get no credit without it.</li>
+    <li>Enter every answer in Canvas. Your written work should match what you enter.</li>
+    <li>Stay on the exam page. Leaving it can result in a zero. Work alone.</li>
+    <li>Once you are in LockDown Browser, turn your phone off and put it in your bag. You can't use it as a calculator.</li>
+    <li>The six exhibits contain 6, 13, 3, 6, 2, and 4 questions. Use each scenario only for its own grouped questions.</li>
+    <li>Professor Spencer's tip: if you overthink multiple choice, start with the show-your-work questions, take the familiar points first, and come back to the confusing items.</li>
+  </ul>
+  <p class="sheet-note">The Canvas assignment list shows 66 possible points. That differs from the announcement, and this guide follows the professor's latest description.</p>
+</section>
+
+<!-- FORMULA SHEET -->
+<section id="sheet">
+  <h2>The official formula sheet</h2>
+  <p class="src">Source: Formula Sheet for Test 2 (3 pages), reproduced in the same order, symbols, and labels</p>
+  <p>This is the sheet you get during the exam. Learn to recognize each line on sight. The grey note under each label says when to use it.</p>
+
+  <div class="sheet">
+    <div class="sheet-title">Exam 2: Chapters 6-8 Formulas</div>
+    <div class="sheet-page">Sheet page 1</div>
+
+    <div class="row"><div class="math">\[\sigma=\sqrt{\dfrac{\sum\limits_{i=1}^{N}x_i^{2}-\dfrac{\left(\Sigma\,x_i\right)^{2}}{n}}{N}}=\sqrt{\dfrac{\sum\limits_{i=1}^{N}(x_i-\bar{x})^{2}}{N}}\]</div>
+      <div class="lbl">Standard Deviation<span class="use">Population. Divide by N.</span></div></div>
+
+    <div class="row"><div class="math">\[s=\sqrt{\dfrac{\sum\limits_{i=1}^{n}x_i^{2}-\dfrac{\left(\Sigma\,x_i\right)^{2}}{n}}{n-1}}=\sqrt{\dfrac{\sum\limits_{i=1}^{n}(x_i-\bar{x})^{2}}{n-1}}\]</div>
+      <div class="lbl">Standard Deviation<span class="use">Sample. Divide by n − 1.</span></div></div>
+
+    <div class="row"><div class="math">\[\frac{\alpha}{2}\quad\&\quad 1-\frac{\alpha}{2}\]</div>
+      <div class="lbl">Critical probability<span class="use">Left-tail and cumulative areas for the cutoffs of a CI, with α = 1 − confidence.</span></div></div>
+
+    <div class="row"><div class="math">\[z=\frac{x-\mu}{\sigma}\]</div>
+      <div class="lbl"><em>z</em>-score (raw data)<span class="use">One individual value (Chapter 6).</span></div></div>
+
+    <div class="row"><div class="math">\[\mathrm{x}=\mu+(\mathrm{z})(\sigma)\]</div>
+      <div class="lbl"><em>z</em>-score to a raw score<span class="use">Percentile or cutoff questions: find x.</span></div></div>
+
+    <div class="row"><div class="math">\[\mu=\mathrm{x}-(\mathrm{z})(\sigma)\]</div>
+      <div class="lbl"><em>z</em>-score to a population mean<span class="use">The mean is the unknown.</span></div></div>
+
+    <div class="row"><div class="math">\[E\,(\,\bar{x}\,)=\mu_{\bar{X}}=\mu\]</div>
+      <div class="lbl">Expected value for sampling distribution of \(\bar{x}\)<span class="use">Center of the sample-mean distribution.</span></div></div>
+
+    <div class="sheet-page">Sheet page 2</div>
+
+    <div class="row"><div class="math">\[z_{\bar{x}}=\frac{\bar{x}-\mu}{\sigma_{\bar{x}}}\]</div>
+      <div class="lbl"><em>z</em>-score (sample mean)<span class="use">Probability about an average of n items.</span></div></div>
+
+    <div class="row"><div class="math">\[\sigma_{\bar{X}}=\frac{\sigma}{\sqrt{n}}\]</div>
+      <div class="lbl">Standard error of the mean (σ known)</div></div>
+
+    <div class="row"><div class="math">\[\mu=\bar{x}\pm\left(Z_{\alpha/2}\right)\left(\frac{\sigma}{\sqrt{n}}\right)\]</div>
+      <div class="lbl">CI estimate for μ (σ known)<span class="use">Use z when the population σ is given.</span></div></div>
+
+    <div class="row"><div class="math">\[S_{\bar{X}}=\frac{s}{\sqrt{n}}\]</div>
+      <div class="lbl">Standard error of the mean (σ unknown)</div></div>
+
+    <div class="row"><div class="math">\[\mu=\bar{x}\pm\left(t_{a/2}\right)\left(\frac{s}{\sqrt{n}}\right)\]</div>
+      <div class="lbl">CI estimate for μ (σ unknown)<span class="use">Use t with df = n − 1. The sheet prints “a/2”, which means α/2.</span></div></div>
+
+    <div class="row"><div class="math">\[\mathrm{n}=\left(\frac{(z_{\alpha/2})\sigma}{E}\right)^{2}\]</div>
+      <div class="lbl">Sample size for interval estimate of μ<span class="use">Always round UP.</span></div></div>
+
+    <div class="sheet-page">Sheet page 3</div>
+
+    <div class="row"><div class="math">\[\bar{p}=\frac{x}{n}\]</div>
+      <div class="lbl">Sample proportion</div></div>
+
+    <div class="row"><div class="math">\[E\,(\,\bar{p}\,)=p.\]</div>
+      <div class="lbl">Expected value for sampling distribution of \(\bar{p}\)</div></div>
+
+    <div class="row"><div class="math">\[\mathrm{np}\geq 5,\ \text{and}\ \ \mathrm{n}(1-\mathrm{p})\geq 5\]</div>
+      <div class="lbl">Normality requirements for sampling distribution of \(\bar{p}\)</div></div>
+
+    <div class="row"><div class="math">\[z_{\bar{p}}=\frac{\bar{p}-p}{\sigma_{\bar{p}}}\]</div>
+      <div class="lbl"><em>z</em>-score (sample proportion)</div></div>
+
+    <div class="row"><div class="math">\[\sigma_{\bar{p}}=\sqrt{\frac{p(1-p)}{n}}\]</div>
+      <div class="lbl">Standard error of the proportion<span class="use">Uses the known population p.</span></div></div>
+
+    <div class="row"><div class="math">\[p=\bar{p}\pm\left(Z_{\alpha/2}\right)\sqrt{\frac{\bar{p}\left(1-\bar{p}\right)}{\mathrm{n}}}\]</div>
+      <div class="lbl">CI estimate for <em>p</em><span class="use">p is unknown, so the SE uses \(\bar{p}\).</span></div></div>
+
+    <div class="row"><div class="math">\[n=\frac{\left(z_{\alpha/2}\right)^{2}\,p^{*}\left(1-p^{*}\right)}{E^{2}}\]</div>
+      <div class="lbl">Sample size for interval estimate of <em>p</em><span class="use">p* = pilot estimate, or .50 if none is given. Round UP.</span></div></div>
+
+    <p class="sheet-note">The population line on the printed sheet shows \(\bar{x}\) and n. For a population you are working with μ and N. Your exam copy will look exactly like the lines above.</p>
+  </div>
+</section>
+
+<!-- CHOOSE -->
+<section id="choose">
+  <h2>Pick the right formula</h2>
+  <p class="src">Source: Formula sheet; Chapter 6–8 slides</p>
+  <p>First decide what the question is about: <strong>one value, an average, or a proportion</strong>. Then decide what it wants: <strong>a probability, an interval, or a sample size</strong>.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>The problem gives or asks…</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td>Probability for one individual value x</td><td>\(z=\dfrac{x-\mu}{\sigma}\)</td></tr>
+      <tr><td>Cutoff value x from a percentile</td><td>Find z from the LEFT area, then \(\mathrm{x}=\mu+(\mathrm{z})(\sigma)\)</td></tr>
+      <tr><td>Unknown mean from x and a percentile</td><td>\(\mu=\mathrm{x}-(\mathrm{z})(\sigma)\)</td></tr>
+      <tr><td>Probability about a sample mean \(\bar{x}\)</td><td>\(\sigma_{\bar{X}}=\dfrac{\sigma}{\sqrt{n}}\), then \(z_{\bar{x}}=\dfrac{\bar{x}-\mu}{\sigma_{\bar{x}}}\)</td></tr>
+      <tr><td>Probability about a sample proportion \(\bar{p}\)</td><td>\(\sigma_{\bar{p}}=\sqrt{\dfrac{p(1-p)}{n}}\), then \(z_{\bar{p}}=\dfrac{\bar{p}-p}{\sigma_{\bar{p}}}\)</td></tr>
+      <tr><td>CI for a mean, σ given</td><td>\(\mu=\bar{x}\pm\left(Z_{\alpha/2}\right)\left(\dfrac{\sigma}{\sqrt{n}}\right)\)</td></tr>
+      <tr><td>CI for a mean, only s given</td><td>\(\mu=\bar{x}\pm\left(t_{a/2}\right)\left(\dfrac{s}{\sqrt{n}}\right)\), df = n − 1</td></tr>
+      <tr><td>CI for a population proportion</td><td>\(p=\bar{p}\pm\left(Z_{\alpha/2}\right)\sqrt{\dfrac{\bar{p}(1-\bar{p})}{\mathrm{n}}}\)</td></tr>
+      <tr><td>Minimum n to estimate a mean</td><td>\(\mathrm{n}=\left(\dfrac{(z_{\alpha/2})\sigma}{E}\right)^{2}\), round UP</td></tr>
+      <tr><td>Minimum n to estimate a proportion</td><td>\(n=\dfrac{\left(z_{\alpha/2}\right)^{2}p^{*}(1-p^{*})}{E^{2}}\), round UP</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Three decisions that prevent most mistakes</h3>
+  <ol class="steps">
+    <li><strong>One value or an average?</strong> A sample mean varies by \(\sigma/\sqrt{n}\), not by σ. A story that mentions 50 people may still ask about just one person, so identify the actual random variable.</li>
+    <li><strong>σ or s?</strong> For a mean CI, use t whenever the population σ is unknown, even if n &gt; 30. Practice Test 2 uses t at n = 60 and n = 32. A large sample does not turn s into σ.</li>
+    <li><strong>Known p or estimated \(\bar{p}\)?</strong> In a Chapter 7 probability, use the given population p in \(\sigma_{\bar{p}}\). In a Chapter 8 CI, p is unknown, so use \(\bar{p}\). For sample-size planning, use p* from a pilot study, or .50 when there isn't one.</li>
+  </ol>
+
+  <h3>Show-your-work template</h3>
+  <p>Question number → list the givens → name the method and check normality → write the formula → substitute → show the SE, the z or t value, and E → give the final answer with the requested decimals and units. For a probability, sketch and shade the area. For an interval, label both endpoints and interpret it in terms of the population parameter.</p>
+</section>
+
+<!-- NORMAL -->
+<section id="normal">
+  <h2>Chapter 6 · Normal curves: values → areas</h2>
+  <p class="src">Source: DS Chapter 6 Normal Curve slides 3–24 · Chapter 6 PDF pp. 1–19 · Practice Test 2 goldfish problem</p>
+  <h3>Facts to know without calculating</h3>
+  <ul>
+    <li>A normal distribution is continuous, bell-shaped, symmetric, and described by μ and σ. Mean = median = mode.</li>
+    <li>The total area is 1, and each side of the mean has area .50. The standard normal distribution has mean 0 and standard deviation 1.</li>
+    <li>A positive z is above the mean and a negative z is below it.</li>
+    <li>For a continuous variable, P(X = a) = 0, so P(X &lt; a) = P(X ≤ a).</li>
+    <li>Empirical rule: about 68%, 95%, and 99.7% of values fall within 1, 2, and 3σ of the mean. For an exact central 95%, use 1.96 rather than 2.</li>
+  </ul>
+
+  <h3>The course z-table gives the area to the LEFT</h3>
+  <p>Compute \(z=\dfrac{x-\mu}{\sigma}\) and round to two decimals. The row gives the ones and tenths digits, and the column gives the hundredths. <em>Example:</em> row 1.2, column .04 → <span class="num">.8925</span> for z = 1.24.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Asked for</th><th>Use the cumulative table this way</th></tr></thead>
+    <tbody>
+      <tr><td>Less than / below a</td><td>LEFT area at z(a)</td></tr>
+      <tr><td>Greater than / above a</td><td>1 − LEFT area at z(a)</td></tr>
+      <tr><td>Between a and b</td><td>LEFT area at z(b) − LEFT area at z(a)</td></tr>
+      <tr><td>Outside a to b</td><td>1 − (probability between a and b)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="curves">
+    <figure><figcaption>Below a</figcaption><svg viewBox="0 0 200 92" data-shade="left" aria-label="Normal curve shaded left of a"></svg></figure>
+    <figure><figcaption>Above a</figcaption><svg viewBox="0 0 200 92" data-shade="right" aria-label="Normal curve shaded right of a"></svg></figure>
+    <figure><figcaption>Between a and b</figcaption><svg viewBox="0 0 200 92" data-shade="between" aria-label="Normal curve shaded between a and b"></svg></figure>
+  </div>
+
+  <h3>Course example: goldfish lifetimes, μ = 60 days, σ = 20 days</h3>
+  <ul>
+    <li><strong>More than 60 days:</strong> z = (60 − 60)/20 = 0, so P = <span class="ans">.50</span>.</li>
+    <li><strong>More than 80 days:</strong> z = (80 − 60)/20 = 1.00. LEFT area = .8413, so the right area = 1 − .8413 = <span class="ans">.1587</span> (15.87%).</li>
+    <li><strong>Between 25 and 45 days:</strong> z(25) = −1.75 → .0401, and z(45) = −.75 → .2266. Then .2266 − .0401 = <span class="ans">.1865</span>.</li>
+    <li><strong>Replaced within 7 days:</strong> z = (7 − 60)/20 = −2.65 → <span class="ans">.0040</span>, which is <span class="ans">.40%</span>. A probability and a percentage differ by a factor of 100.</li>
+  </ul>
+  <div class="callout"><p><span class="lab">Sanity checks.</span> A tail beyond the mean must be less than .50, and a far tail must be small. Every probability is between 0 and 1. To find an area between two values, subtract the <em>areas</em>, never the z-scores.</p></div>
+</section>
+
+<!-- PERCENTILES -->
+<section id="percentiles">
+  <h2>Chapter 6 · Percentiles: areas → values</h2>
+  <p class="src">Source: Chapter 6 slide 24 · Chapter 6 PDF pp. 18–19 · Practice Test 2</p>
+  <p>To find a cutoff from a percentage, work backwards. Convert the percentage to an <strong>area to the LEFT</strong>, find that area inside the z-table, read off z, and convert back:</p>
+  <div class="math">\[\mathrm{x}=\mu+(\mathrm{z})(\sigma)\qquad\qquad \mu=\mathrm{x}-(\mathrm{z})(\sigma)\]</div>
+  <div class="tbl"><table>
+    <thead><tr><th>Wording</th><th class="n">Area to find in the table</th></tr></thead>
+    <tbody>
+      <tr><td>Bottom 20% / 20th percentile</td><td class="n">.20</td></tr>
+      <tr><td>Top 10% / longest-lived 10%</td><td class="n">1 − .10 = .90</td></tr>
+      <tr><td>67.72% are larger than x</td><td class="n">1 − .6772 = .3228</td></tr>
+      <tr><td>x is larger than 86.65% of values</td><td class="n">.8665</td></tr>
+      <tr><td>Central 95%, symmetric</td><td class="n">.0250 and .9750</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Course examples</h3>
+  <ul>
+    <li><strong>Goldfish, top 10%:</strong> area .90 → z ≈ 1.28. x = 60 + (1.28)(20) = <span class="ans">85.6 days</span>.</li>
+    <li><strong>Goldfish, bottom 20%:</strong> area .20 → z ≈ −.84. x = 60 + (−.84)(20) = <span class="ans">43.2 days</span>.</li>
+    <li><strong>Goldfish, central 95%:</strong> z = ±1.96, so 60 ± 1.96(20) = 60 ± 39.20 → <span class="ans">20.80 to 99.20 days</span>.</li>
+    <li><strong>Unknown mean:</strong> x = 449, σ = 36, and 86.65% of values are below x. Area .8665 → z = 1.11. μ = 449 − (1.11)(36) = <span class="ans">409.04</span>.</li>
+    <li><strong>Unknown x:</strong> μ = 3.58, σ = 1.04, and 67.72% are larger than x. LEFT area .3228 → z = −.46. x = 3.58 + (−.46)(1.04) = <span class="ans">3.1016</span> (3.10).</li>
+  </ul>
+  <div class="callout"><p><span class="lab">Self-check.</span> “Top 10%” means you look up .90, because the table gives the area <em>below</em> the cutoff. The central 95% of <em>individual</em> lifetimes uses σ = 20. A 95% CI for a mean uses a standard error instead. Both use 1.96, but they answer different questions.</p></div>
+</section>
+
+<!-- XBAR -->
+<section id="xbar">
+  <h2>Chapter 7 · Sampling distribution of \(\bar{x}\)</h2>
+  <p class="src">Source: DS Chapter 7 slides 8–29 · Chapter 7 PDF pp. 8–13 · Mean Sample Problems handout · Practice Test 2 credit-card problem</p>
+  <h3>When asked for “the sampling distribution,” state all three</h3>
+  <ul>
+    <li><strong>Center:</strong> \(E\,(\,\bar{x}\,)=\mu_{\bar{X}}=\mu\). \(\bar{x}\) is an unbiased estimator of μ.</li>
+    <li><strong>Spread:</strong> \(\sigma_{\bar{X}}=\dfrac{\sigma}{\sqrt{n}}\), the standard deviation of sample means over repeated samples of size n.</li>
+    <li><strong>Shape:</strong> normal for any n if the population is normal. Otherwise approximately normal when <strong>n ≥ 30</strong> (Central Limit Theorem). The population itself does not become normal.</li>
+  </ul>
+  <p><strong>Sampling error</strong> is the natural difference between \(\bar{x}\) and μ from one random sample to the next. It does not mean someone made a mistake.</p>
+
+  <h3>Course example: credit-card balances</h3>
+  <p>μ = $2,864, σ = $775, n = 50. Because n ≥ 30, \(\bar{x}\) is approximately normal with center $2,864 and \(\sigma_{\bar{X}}=\dfrac{775}{\sqrt{50}}=109.6016\).</p>
+  <ul>
+    <li><strong>P(\(\bar{x}\) &gt; $3,000):</strong> \(z_{\bar{x}}=\dfrac{3000-2864}{109.6016}=1.24\). LEFT area = .8925, so 1 − .8925 = <span class="ans">.1075</span>.</li>
+    <li><strong>P(within $100 of μ):</strong> $2,764 ≤ \(\bar{x}\) ≤ $2,964 → z = ±.91. Then .8186 − .1814 = <span class="ans">.6372</span>.</li>
+    <li><strong>Same question with n = 100:</strong> \(\sigma_{\bar{X}}\) = 775/10 = 77.5 → z = ±1.29. Then .9015 − .0985 = <span class="ans">.8030</span>.</li>
+  </ul>
+  <h3>What changes when n changes</h3>
+  <p>A larger n leaves the center at μ and shrinks \(\sigma_{\bar{X}}\), so more sample means fall close to μ. Multiplying n by 4 cuts the SE in half. The population σ does not change.</p>
+  <div class="callout"><p><span class="lab">Common mistake.</span> Don't divide by 775 in the sample-mean z-score. That describes individual balances, not the mean of 50 balances. The finite-population correction factor appears in the Chapter 7 PDF, but it is not on the formula sheet and the practice handouts leave it out.</p></div>
+</section>
+
+<!-- PBAR -->
+<section id="pbar">
+  <h2>Chapter 7 · Sampling distribution of \(\bar{p}\)</h2>
+  <p class="src">Source: DS Chapter 7 slides 39–44 · Chapter 7 PDF pp. 14–16 · Proportion Sample Problems handout · Practice Test 2 internet problem</p>
+  <p><strong>p</strong> is the population proportion and \(\bar{p}=\dfrac{x}{n}\) is the sample proportion, where x is the number of items with the characteristic. Keep proportions as decimals: 66% = .66.</p>
+  <ul>
+    <li><strong>Center:</strong> \(E\,(\,\bar{p}\,)=p.\)</li>
+    <li><strong>Spread:</strong> \(\sigma_{\bar{p}}=\sqrt{\dfrac{p(1-p)}{n}}\)</li>
+    <li><strong>Shape:</strong> approximately normal when \(\mathrm{np}\geq 5,\ \text{and}\ \mathrm{n}(1-\mathrm{p})\geq 5\). The Chapter 7 slides write “&gt; 5”, but follow the formula sheet for a boundary case.</li>
+    <li><strong>Probability:</strong> \(z_{\bar{p}}=\dfrac{\bar{p}-p}{\sigma_{\bar{p}}}\), then use the same table rules as in Chapter 6.</li>
+  </ul>
+  <h3>Course example: internet use among adults over 70</h3>
+  <p>p = .66, n = 300. Find the probability that \(\bar{p}\) is within .04 of p. Round proportions to two decimals and the SE to four.</p>
+  <ol class="steps">
+    <li><strong>Shape:</strong> np = 300(.66) = 198 and n(1 − p) = 300(.34) = 102. Both are ≥ 5, so the distribution is approximately normal.</li>
+    <li><strong>Center:</strong> \(E\,(\,\bar{p}\,)\) = <span class="ans">.66</span></li>
+    <li><strong>Spread:</strong> \(\sigma_{\bar{p}}=\sqrt{\dfrac{(.66)(.34)}{300}}=\sqrt{.000748}\) = <span class="ans">.0273</span></li>
+    <li><strong>Translate:</strong> “within .04” means .62 ≤ \(\bar{p}\) ≤ .70.</li>
+    <li><strong>Standardize:</strong> z = (.62 − .66)/.0273 = −1.47 and z = (.70 − .66)/.0273 = 1.47, giving areas .0708 and .9292.</li>
+    <li><strong>Subtract:</strong> .9292 − .0708 = <span class="ans">.8584</span> (85.84%)</li>
+  </ol>
+  <div class="callout"><p><span class="lab">Traps.</span> The n ≥ 30 rule is for means. For proportions, check <strong>both counts</strong>. If the question gives a count cutoff, convert it to \(\bar{p}\) = x/n first. Write .04, not 4.</p></div>
+</section>
+
+<!-- CI -->
+<section id="ci">
+  <h2>Chapter 8 · Confidence intervals and critical values</h2>
+  <p class="src">Source: DS Chapter 8 slides 9–56 · Chapter 8 PDF pp. 1–8, 15–16 · Sigma Known / Minimum Sample Sizes handout · Practice Test 2</p>
+  <p>Every interval has the same structure: <strong>point estimate ± margin of error</strong>, where E = (critical value)(standard error). The width of the interval is 2E. A mean CI estimates μ, and a proportion CI estimates p.</p>
+  <p>For confidence level C, α = 1 − C. Split α evenly between the two tails. The critical probabilities are</p>
+  <div class="math">\[\frac{\alpha}{2}\quad\&\quad 1-\frac{\alpha}{2}\]</div>
+  <p>Look up \(1-\frac{\alpha}{2}\) inside the z-table to get \(Z_{\alpha/2}\).</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Confidence</th><th class="n">α</th><th class="n">α/2</th><th class="n">1 − α/2</th><th class="n">\(Z_{\alpha/2}\)</th></tr></thead>
+    <tbody>
+      <tr><td>80%</td><td class="n">.20</td><td class="n">.1000</td><td class="n">.9000</td><td class="n"><strong>1.28</strong></td></tr>
+      <tr><td>90%</td><td class="n">.10</td><td class="n">.0500</td><td class="n">.9500</td><td class="n"><strong>1.645</strong></td></tr>
+      <tr><td>95%</td><td class="n">.05</td><td class="n">.0250</td><td class="n">.9750</td><td class="n"><strong>1.96</strong></td></tr>
+      <tr><td>98%</td><td class="n">.02</td><td class="n">.0100</td><td class="n">.9900</td><td class="n"><strong>2.33</strong></td></tr>
+      <tr><td>99%</td><td class="n">.01</td><td class="n">.0050</td><td class="n">.9950</td><td class="n"><strong>2.576</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p>When a question asks for both cutoffs, give them as ±z. Use the positive value to compute E.</p>
+
+  <h3>σ known: the Verizon problem</h3>
+  <p>\(\bar{x}\) = 153 monthly minutes per residential user, σ = 46, n = 85, 95% confidence.</p>
+  <div class="math">\[\mu=\bar{x}\pm\left(Z_{\alpha/2}\right)\left(\frac{\sigma}{\sqrt{n}}\right)=153\pm(1.96)\left(\frac{46}{\sqrt{85}}\right)=153\pm(1.96)(4.9894)=153\pm 9.7792\]</div>
+  <p>CI = <span class="ans">(143.22, 162.78) minutes</span>. <em>Interpretation:</em> We are 95% confident that the population mean monthly minutes per residential user is between 143.22 and 162.78.</p>
+
+  <h3>Minimum n for a mean: bread expenditure</h3>
+  <p>90% confidence, σ = $4, E = $1.</p>
+  <div class="math">\[\mathrm{n}=\left(\frac{(z_{\alpha/2})\sigma}{E}\right)^{2}=\left(\frac{(1.645)(4)}{1}\right)^{2}=43.2964\]</div>
+  <p>Round <strong>up</strong> to <span class="ans">44 families</span>. If σ is unknown at the planning stage, the slides use a pilot study or range/4 as an estimate.</p>
+  <div class="callout"><p><span class="lab">What “95% confident” means.</span> If you repeated the sampling many times, about 95% of the intervals built this way would contain the fixed population parameter. The interval estimates μ. It is not the range that holds 95% of individual values.</p></div>
+</section>
+
+<!-- T -->
+<section id="t">
+  <h2>Chapter 8 · Mean CI when σ is unknown (t)</h2>
+  <p class="src">Source: DS Chapter 8 slides 57–67 · Chapter 8 PDF pp. 8–12 · Sigma Unknown t handout · Practice Test 2</p>
+  <div class="math">\[S_{\bar{X}}=\frac{s}{\sqrt{n}}\qquad\qquad \mu=\bar{x}\pm\left(t_{a/2}\right)\left(\frac{s}{\sqrt{n}}\right),\quad df=n-1\]</div>
+  <p>For a small sample, look for the statement that the population is normal. The course allows the large-sample approach when the population isn't normal.</p>
+  <h3>Reading the t-table</h3>
+  <p>Go to the <strong>df row</strong> and the <strong>upper-tail area α/2</strong> column. The number where they meet is t. The body of the t-table holds critical values, while the body of the z-table holds probabilities.</p>
+  <ul>
+    <li>Upper-tail area .025, df = 12 → <span class="num">t = 2.179</span></li>
+    <li>Lower-tail area .05, n = 51 (df = 50) → <span class="num">t = −1.676</span></li>
+    <li>Central 90%, n = 26 (df = 25) → <span class="num">−1.708 and +1.708</span></li>
+  </ul>
+  <h3>Aerospace managers: the full course example</h3>
+  <p>The population is normal. n = 18, \(\bar{x}\) = 13.56 overtime hours/week, s = 7.8, 90% confidence. σ is unknown → t, α = .10, α/2 = .05, df = 17 → t = 1.740.</p>
+  <div class="math">\[\mu=13.56\pm(1.74)\left(\frac{7.8}{\sqrt{18}}\right)=13.56\pm(1.74)(1.83848)=13.56\pm 3.19895\]</div>
+  <p>CI = <span class="ans">(10.36, 16.76) hours</span>. We are 90% confident that the population mean weekly overtime for aerospace managers is between 10.36 and 16.76 hours.</p>
+  <h3>Large samples still use t</h3>
+  <ul>
+    <li>\(\bar{x}\) = 25, s = 3.5, n = 60, 95%: df = 59, t = 2.001, SE = .45185, E = .90415 → <span class="ans">(24.096, 25.904)</span></li>
+    <li>\(\bar{x}\) = 3.419, s = .974, n = 32, 90%: df = 31, t = 1.696, E = .29202 → <span class="ans">(3.127, 3.711)</span></li>
+  </ul>
+  <p><strong>t compared with z:</strong> t is symmetric and bell-shaped but has heavier tails. At the same confidence level its critical value is larger, so the interval is wider. As df grows, t approaches z.</p>
+</section>
+
+<!-- PROP -->
+<section id="prop">
+  <h2>Chapter 8 · Proportion CI and minimum sample size</h2>
+  <p class="src">Source: DS Chapter 8 slides 68–80 · Chapter 8 PDF pp. 13–18 · Proportions / Minimum Sample Size handout · Practice Test 2</p>
+  <div class="math">\[p=\bar{p}\pm\left(Z_{\alpha/2}\right)\sqrt{\frac{\bar{p}\left(1-\bar{p}\right)}{\mathrm{n}}}\]</div>
+  <p>Find \(\bar{p}=\dfrac{x}{n}\) if it isn't given. Check that n\(\bar{p}\) and n(1 − \(\bar{p}\)) are both at least 5.</p>
+  <h3>Temporary-hire companies (Practice Test 2)</h3>
+  <p>\(\bar{p}\) = .39, n = 87, 95% confidence. Counts: 87(.39) = 33.93 and 87(.61) = 53.07, both above 5.</p>
+  <div class="math">\[p=.39\pm(1.96)\sqrt{\frac{(.39)(.61)}{87}}=.39\pm(1.96)(.0523)=.39\pm .1025\]</div>
+  <p>CI ≈ <span class="ans">(.2875, .4925)</span>, or (.29, .49) to two decimals. We are 95% confident that the population proportion of companies using temporary hires during the holiday season is between about 28.75% and 49.25%.</p>
+
+  <h3>Minimum n for a proportion</h3>
+  <div class="math">\[n=\frac{\left(z_{\alpha/2}\right)^{2}\,p^{*}\left(1-p^{*}\right)}{E^{2}}\]</div>
+  <p>Use a pilot p* if one is given. Otherwise use <strong>p* = .50</strong>, because .50(.50) = .25 is the largest possible p*(1 − p*) and gives the most conservative n.</p>
+  <ul>
+    <li><strong>Acme, with pilot:</strong> 98% → \(z_{\alpha/2}\) = 2.33, E = .03, p* = .40. n = (2.33)²(.40)(.60)/(.03)² = 1.302936/.0009 = 1447.71 → <span class="ans">1,448</span></li>
+    <li><strong>Acme, no pilot:</strong> n = (2.33)²(.50)(.50)/(.03)² = 1.357225/.0009 = 1508.03 → <span class="ans">1,509</span>. The key prints 1,508 because it rounded too early, and the round-up rule gives 1,509.</li>
+  </ul>
+  <h3>How the pieces move</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Change</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>Higher confidence</td><td>Larger z or t, larger E, wider interval</td></tr>
+      <tr><td>Larger n</td><td>Smaller SE, smaller E, narrower interval</td></tr>
+      <tr><td>Smaller target E</td><td>Larger required n. Halving E needs 4× the n</td></tr>
+      <tr><td>Larger σ</td><td>Larger required n for a mean</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><p><span class="lab">Units and rounding.</span> “Within 3 percentage points” means E = .03, not 3. A minimum sample size always rounds <strong>up</strong> to the next whole number.</p></div>
+</section>
+
+<!-- CONCEPTS -->
+<section id="concepts">
+  <h2>Concepts and vocabulary</h2>
+  <p class="src">Source: Chapter 7 PDF pp. 1–8 · Chapter 7–8 slides · Chapter 6 PDF pp. 1–2, 20</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Population / sample</td><td>All elements of interest / the subset studied</td></tr>
+      <tr><td>Parameter</td><td>Describes the population: μ, σ, p</td></tr>
+      <tr><td>Statistic</td><td>Describes the sample: \(\bar{x}\), s, \(\bar{p}\)</td></tr>
+      <tr><td>Sampling distribution</td><td>Distribution of a statistic over all possible samples of the same size</td></tr>
+      <tr><td>Standard error</td><td>Standard deviation of a sampling distribution</td></tr>
+      <tr><td>Point / interval estimate</td><td>A single statistic / a range built around it</td></tr>
+      <tr><td>Unbiased estimator</td><td>Its expected value equals the parameter. It doesn't have to hit the parameter in every sample</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Sampling methods</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Method</th><th>How to recognize it</th></tr></thead>
+    <tbody>
+      <tr><td>Simple random</td><td>Every item in the frame has an equal chance of selection</td></tr>
+      <tr><td>Stratified random</td><td>Divide into non-overlapping subgroups (strata) and randomly sample from <em>each</em> one</td></tr>
+      <tr><td>Systematic</td><td>Random start, then every kth item, where k = N/n</td></tr>
+      <tr><td>Cluster</td><td>Randomly select <em>some</em> groups or areas that represent the population</td></tr>
+      <tr><td>Convenience</td><td>Whoever or whatever is easiest to reach</td></tr>
+      <tr><td>Judgment</td><td>The researcher picks people judged to be representative</td></tr>
+      <tr><td>Quota</td><td>Fill subgroup targets using nonrandom selection</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Stratified vs. cluster:</strong> stratified sampling draws from every stratum, while cluster sampling selects only some clusters. <strong>Stratified vs. quota:</strong> stratified selection within groups is random, and quota selection is not.</p>
+  <h3>Four survey errors</h3>
+  <ul>
+    <li><strong>Coverage/selection:</strong> the frame leaves out relevant groups.</li>
+    <li><strong>Nonresponse:</strong> people who don't answer differ from those who do.</li>
+    <li><strong>Measurement:</strong> question wording, respondent mistakes, or interviewer effects distort the answers.</li>
+    <li><strong>Sampling:</strong> estimates naturally vary from sample to sample.</li>
+  </ul>
+  <p>Reasons to sample include saving time and money, and avoiding the loss of product in destructive testing.</p>
+  <h3>Standard deviation from raw data</h3>
+  <p>Compute the mean, each deviation, each squared deviation, and their sum. Then divide by <strong>N</strong> for a population or <strong>n − 1</strong> for a sample, and take the square root (see sheet page 1). A normal probability plot whose points lie close to the reference line supports approximate normality.</p>
+</section>
+
+<!-- PRACTICE -->
+<section id="practice">
+  <h2>Practice Test 2: method map</h2>
+  <p class="src">Source: Practice Test 2 V3 Revised · Answer Key V3 Revised 2</p>
+  <p>Work Practice Test 2 on blank paper using only the formula sheet and the tables. Name the method before you calculate. Then open each item below to check your answer. The practice test says it shows some kinds of exam questions, not everything that may be asked.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Problem</th><th>Write first</th></tr></thead>
+    <tbody>
+      <tr><td>Bread expenditure</td><td>Mean sample size, 90%, \(Z_{\alpha/2}\) = 1.645</td></tr>
+      <tr><td>Aerospace managers</td><td>Mean CI, s given → t, df = 17</td></tr>
+      <tr><td>x = 449, 86.65% below</td><td>Inverse normal, solve for μ</td></tr>
+      <tr><td>\(\bar{x}\) = 25, s = 3.5, n = 60</td><td>t, df = 59, 95%</td></tr>
+      <tr><td>\(\bar{x}\) = 119, σ = 23.89, n = 75</td><td>z, 98%</td></tr>
+      <tr><td>\(\bar{x}\) = 3.419, s = .974, n = 32</td><td>t, df = 31, 90%</td></tr>
+      <tr><td>\(\bar{x}\) = 57.7, σ = 12.1, n = 47</td><td>z, 80%</td></tr>
+      <tr><td>Temporary-hire companies</td><td>Proportion CI, \(\bar{p}\) = .39</td></tr>
+      <tr><td>67.72% larger than x</td><td>LEFT area .3228, inverse normal</td></tr>
+      <tr><td>Goldfish lifetimes</td><td>Individual x, σ = 20</td></tr>
+      <tr><td>Acme sample size</td><td>Proportion n, E = .03</td></tr>
+      <tr><td>Credit-card sample means</td><td>\(\sigma_{\bar{X}}=\sigma/\sqrt{n}\)</td></tr>
+      <tr><td>Verizon</td><td>Mean CI with z</td></tr>
+      <tr><td>Internet-use sample proportion</td><td>Center, SE, shape, then probability</td></tr>
+    </tbody>
+  </table></div>
+
+  <details><summary>Answers: Chapter 6 problems</summary><div>
+    <p>Goldfish: .50 · .1587 · .1865 · .0040 = .40% · 20.80–99.20 days · 85.6 days · 43.2 days</p>
+    <p>x = 449 → μ = 409.04 · 67.72% larger → x = 3.1016</p>
+  </div></details>
+  <details><summary>Answers: Chapter 7 problems</summary><div>
+    <p>Credit card: .1075 · .6372 · .8030 (n = 100)</p>
+    <p>Internet use: center .66 · SE .0273 · approximately normal · .8584</p>
+  </div></details>
+  <details><summary>Answers: Chapter 8 problems</summary><div>
+    <p>Bread: n = 44 · Aerospace: (10.36, 16.76) · Verizon: (143.22, 162.78)</p>
+    <p>(24.096, 25.904) · (112.57, 125.43) · (3.127, 3.711) · (55.44, 59.96)</p>
+    <p>Temporary hires: (.2875, .4925) · Acme: 1,448 with pilot, 1,509 without</p>
+  </div></details>
+
+  <h3>Fix weak spots with the matching Canvas handout</h3>
+  <ul>
+    <li>Normal areas and cutoffs → <em>Chapter 6 Normal Curve Examples with Answers</em></li>
+    <li>Sample-mean probabilities → <em>Chapter 7 Mean Sample Problems with Answers</em></li>
+    <li>Sample-proportion probabilities → <em>Chapter 7 Proportion Sample Problems with Answers</em></li>
+    <li>z CI and minimum n for a mean → <em>Chapter 8 Mean Sigma Known / Minimum Sample Sizes</em></li>
+    <li>t CI → <em>Chapter 8 Mean Sigma Unknown t</em></li>
+    <li>Proportion CI and minimum n → <em>Chapter 8 Proportions / Minimum Sample Size</em></li>
+  </ul>
+</section>
+
+<!-- FINAL -->
+<section id="final">
+  <h2>Final checks</h2>
+  <p class="src">Source: Exam 2 announcement · Practice Test 2 key · Chapter 6 PDF p. 19</p>
+  <h3>Errors in the practice key not to learn from</h3>
+  <ul>
+    <li><strong>Acme, no pilot:</strong> the correct answer is 1,509, not 1,508. Always round n up at the very end.</li>
+    <li><strong>67.72% above x:</strong> one line of the key prints .3328. The correct LEFT area is <strong>.3228</strong>, which gives z = −.46.</li>
+    <li><strong>Goldfish above 60:</strong> the answer .50 is right, but the key shows the z-score as .5. The correct value is <strong>z = 0</strong>.</li>
+    <li><strong>Verizon:</strong> the interval estimates <em>mean monthly minutes per residential user</em>, not the average length of a call.</li>
+  </ul>
+  <h3>Rounding</h3>
+  <p>Professor Spencer distinguishes <strong>“round final answer only”</strong> (keep full precision until the end) from <strong>“round all calculations”</strong> (round at every step). Follow the exact number of decimals each question asks for. Canvas may reject an answer that is rounded differently. Minimum sample sizes always round <strong>up</strong>.</p>
+  <h3>Before class</h3>
+  <ul class="chk">
+    <li>LockDown Browser installed and tech check done. Laptop charged.</li>
+    <li>Calculator, blank paper, and a pen or pencil.</li>
+    <li>Clean z-table, t-table, and formula sheet with no notes on them.</li>
+    <li>Arrive on time. Once logged in, turn your phone off and put it in your bag.</li>
+  </ul>
+  <h3>During the 95 minutes</h3>
+  <ul>
+    <li>For each problem, write the formula from the sheet before you touch the calculator.</li>
+    <li>Sketch the curve and shade the area for every probability.</li>
+    <li>Number your work, put your name on every page, and hand it in.</li>
+  </ul>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <h2>Canvas sources</h2>
+  <p class="src">MGSC2301 Merged Fall 2026 · links need your Canvas login</p>
+  <p>All content comes from the course's Canvas materials as gathered in the uploaded study-guide PDF. No outside sites or textbooks were used.</p>
+  <ul>
+    <li>Professor Spencer: Exam 2 Preparation (announcement, Oct 28, 2026)</li>
+    <li>Daily Schedule of Covered Material, MGSC2301 Fall 2026</li>
+    <li>Formula Sheet for Test 2 (3 pages)</li>
+    <li>Practice Test 2, V3 Revised · Practice Test 2 Answer Key V3 Revised 2</li>
+    <li>DS Chapter 6 Normal Curve 2026 slides · DS Chapter 7 2026 slides · DS Chapter 8 Confidence Intervals 2026 slides</li>
+    <li>Chapter 6 PDF: Normal Distribution · Chapter 7 PDF: Sampling and Sampling Distributions · Chapter 8 PDF: Estimation for Single Populations</li>
+    <li>Chapter 6 Normal Curve Examples · Chapter 7 Mean / Proportion Sample Problems · Chapter 8 Sigma Known, Sigma Unknown t, and Proportions handouts (all with answers)</li>
+    <li>Clean course z-table and t-table</li>
+  </ul>
+</section>
+</main>
+</div>
+
+<script>
+(function () {
+  var W = 200, base = 78, top = 10, sx = 34; // x pixels per standard deviation
+  function y(x) { var z = (x - 100) / sx; return base - (base - top) * Math.exp(-z * z / 2); }
+  function path(a, b) {
+    var d = 'M' + a + ' ' + base;
+    for (var x = a; x <= b; x += 2) d += ' L' + x + ' ' + y(x).toFixed(2);
+    return d + ' L' + b + ' ' + base + ' Z';
+  }
+  var line = 'M0 ' + y(0).toFixed(2);
+  for (var x = 2; x <= W; x += 2) line += ' L' + x + ' ' + y(x).toFixed(2);
+  var A = 128, A2 = 72, B2 = 124;
+  document.querySelectorAll('svg[data-shade]').forEach(function (svg) {
+    var kind = svg.getAttribute('data-shade');
+    var s = kind === 'left' ? path(0, A) : kind === 'right' ? path(A, W) : path(A2, B2);
+    var marks = kind === 'between' ? [[A2, 'a'], [B2, 'b']] : [[A, 'a']];
+    var html = '<path d="' + s + '" style="fill:var(--curve-fill)"/>' +
+      '<line x1="0" y1="' + base + '" x2="' + W + '" y2="' + base + '" style="stroke:var(--muted)" stroke-width="1"/>' +
+      '<path d="' + line + '" fill="none" style="stroke:var(--accent)" stroke-width="2"/>';
+    marks.forEach(function (m) {
+      html += '<line x1="' + m[0] + '" y1="' + y(m[0]).toFixed(2) + '" x2="' + m[0] + '" y2="' + base + '" style="stroke:var(--accent-2)" stroke-width="1.5"/>' +
+        '<text x="' + m[0] + '" y="90" text-anchor="middle" font-size="10" style="fill:var(--ink)" font-family="IBM Plex Mono, monospace">' + m[1] + '</text>';
+    });
+    svg.innerHTML = html;
+  });
+})();
+</script>
